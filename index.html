@@ -1,492 +1,486 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quantum Mind - Dark Futuristic Galaxy</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
-      rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+        rel="stylesheet"
     />
     <style>
-      /* Global Reset */
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Montserrat", sans-serif;
-      }
+        /* Global Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Montserrat", sans-serif;
+        }
 
-      /* Main Styling */
-      body {
-        background-color: #000;
-        color: #fff;
-        text-align: center;
-        overflow-x: hidden;
-        position: relative;
-        transition: filter 0.5s ease;
-      }
+        /* Main Styling */
+        body {
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+            overflow-x: hidden;
+            position: relative;
+            transition: filter 0.5s ease;
+        }
 
-      canvas {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-        display: none; /* Initially hide the canvas */
-      }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            display: none; /* Initially hide the canvas */
+        }
 
-      /* Header & Mobile Menu */
-      header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        padding: 15px 20px;
-        background: rgba(0, 0, 0, 0.9);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        z-index: 100;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-      }
+        /* Header & Mobile Menu */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
 
-      .logo {
-        font-size: 1.5em;
-        font-weight: bold;
-      }
+        .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
 
-      /* Hamburger Menu */
-      .menu-toggle {
-        font-size: 1.8em;
-        cursor: pointer;
-      }
+        /* Hamburger Menu */
+        .menu-toggle {
+            font-size: 1.8em;
+            cursor: pointer;
+        }
 
-      .nav-links {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 60%;
-        height: 100vh;
-        background: rgba(15, 15, 15, 0.95);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 20px;
-        transition: right 0.4s ease-in-out;
-        z-index: 99;
-      }
+        .nav-links {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 60%;
+            height: 100vh;
+            background: rgba(15, 15, 15, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            transition: right 0.4s ease-in-out;
+            z-index: 99;
+        }
 
-      .nav-links a {
-        color: #fff;
-        text-decoration: none;
-        font-size: 1.5em;
-        padding: 10px;
-        transition: all 0.3s;
-      }
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.5em;
+            padding: 10px;
+            transition: all 0.3s;
+        }
 
-      .nav-links a:hover {
-        color: #aaa;
-      }
+        .nav-links a:hover {
+            color: #aaa;
+        }
 
-      .nav-active {
-        right: 0;
-      }
+        .nav-active {
+            right: 0;
+        }
 
-      /* Sections */
-      .hero {
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        padding: 20px;
-        background: rgba(0, 0, 0, 0.7);
-        transition: opacity 1s ease-in-out;
-      }
+        /* Sections */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            transition: opacity 1s ease-in-out;
+        }
 
-      .hero h1 {
-        font-size: 3em;
-        margin-bottom: 20px;
-        text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-      }
-
-      .links {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-        margin-bottom: 40px;
-      }
-
-      .link {
-        padding: 15px 25px;
-        background-color: rgba(255, 255, 255, 0.1);
-        border: 1px solid #fff;
-        color: #fff;
-        text-decoration: none;
-        font-size: 1.2em;
-        border-radius: 5px;
-        transition: all 0.3s ease;
-      }
-
-      .link:hover {
-        background-color: rgba(255, 255, 255, 0.2);
-        transform: translateY(-2px);
-      }
-
-      /* Travel Button */
-      .travel-button {
-        padding: 15px 25px;
-        background-color: rgba(255, 0, 0, 0.7);
-        border: 2px solid #ff0000;
-        color: #fff;
-        text-decoration: none;
-        font-size: 1.2em;
-        border-radius: 5px;
-        transition: all 0.3s ease;
-        box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
-        min-width: 160px;
-      }
-
-      .travel-button:hover {
-        background-color: rgba(255, 0, 0, 0.9);
-        transform: scale(1.1);
-        box-shadow: 0 0 25px rgba(255, 0, 0, 1);
-      }
-
-      /* About & Contact Sections */
-      .section {
-        padding: 60px 20px;
-        text-align: center;
-        background: rgba(0, 0, 0, 0.9);
-        margin: 20px 0;
-        transition: opacity 1s ease-in-out;
-      }
-
-      .section h1 {
-        font-size: 2.2rem;
-        margin-bottom: 15px;
-      }
-
-      .section p {
-        font-size: 1.2rem;
-        line-height: 1.6;
-        max-width: 600px;
-        margin: 0 auto 10px;
-      }
-
-      /* Buttons */
-      .button-container {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        margin-top: 20px;
-        flex-direction: column;
-      }
-
-      .button {
-        text-decoration: none;
-        color: #fff;
-        background-color: #1e1e1e;
-        padding: 12px 24px;
-        border-radius: 5px;
-        font-size: 1rem;
-        transition: background 0.3s ease;
-        display: inline-block;
-        text-align: center;
-        min-width: 160px;
-        position: relative;
-      }
-
-      .button:hover {
-        background-color: #444;
-      }
-
-      .button span {
-        position: absolute;
-        top: 50%;
-        right: 10px;
-        transform: translateY(-50%);
-        font-size: 0.8rem;
-        color: #aaa;
-      }
-
-      /* Floating Icons */
-      .floating-icon {
-        position: fixed;
-        width: 40px;
-        height: 40px;
-        background-size: cover;
-        cursor: pointer;
-        opacity: 0.7;
-        transition: opacity 0.3s ease;
-      }
-
-      .floating-icon:hover {
-        opacity: 1;
-      }
-
-      .exit-icon {
-        bottom: 20px; /* Moved to bottom */
-        right: 20px;
-        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ffffff"><path d="M5.293 5.293a1 1 0 011.414 0L12 10.586l5.293-5.293a1 1 0 111.414 1.414L13.414 12l5.293 5.293a1 1 0 01-1.414 1.414L12 13.414l-5.293 5.293a1 1 0 01-1.414-1.414L10.586 12 5.293 6.707a1 1 0 010-1.414z"/></svg>');
-        background-size: cover;
-        z-index: 1000;
-      }
-
-      /* Responsive */
-      @media (max-width: 768px) {
         .hero h1 {
-          font-size: 2.5em;
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
         }
-        .section h1 {
-          font-size: 2rem;
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 40px;
         }
-        .section p {
-          font-size: 1.1rem;
-        }
+
         .link {
-          font-size: 1em;
+            padding: 15px 25px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid #fff;
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2em;
+            border-radius: 5px;
+            transition: all 0.3s ease;
         }
+
+        .link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Travel Button */
+        .travel-button {
+            padding: 15px 25px;
+            background-color: rgba(255, 0, 0, 0.7);
+            border: 2px solid #ff0000;
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2em;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+            min-width: 160px;
+        }
+
+        .travel-button:hover {
+            background-color: rgba(255, 0, 0, 0.9);
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(255, 0, 0, 1);
+        }
+
+        /* About & Contact Sections */
+        .section {
+            padding: 60px 20px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.9);
+            margin: 20px 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .section h1 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+
+        .section p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto 10px;
+        }
+
+        /* Buttons */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-direction: column;
+        }
+
         .button {
-          font-size: 0.9rem;
-          padding: 10px 20px;
+            text-decoration: none;
+            color: #fff;
+            background-color: #1e1e1e;
+            padding: 12px 24px;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+            display: inline-block;
+            text-align: center;
+            min-width: 160px;
+            position: relative;
         }
-      }
+
+        .button:hover {
+            background-color: #444;
+        }
+
+        .button span {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        /* Floating Icons */
+        .floating-icon {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            background-size: cover;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .floating-icon:hover {
+            opacity: 1;
+        }
+
+        .exit-icon {
+            bottom: 20px; /* Moved to bottom */
+            right: 20px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ffffff"><path d="M5.293 5.293a1 1 0 011.414 0L12 10.586l5.293-5.293a1 1 0 111.414 1.414L13.414 12l5.293 5.293a1 1 0 01-1.414 1.414L12 13.414l-5.293 5.293a1 1 0 01-1.414-1.414L10.586 12 5.293 6.707a1 1 0 010-1.414z"/></svg>');
+            background-size: cover;
+            z-index: 1000;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5em;
+            }
+            .section h1 {
+                font-size: 2rem;
+            }
+            .section p {
+                font-size: 1.1rem;
+            }
+            .link {
+                font-size: 1em;
+            }
+            .button {
+                font-size: 0.9rem;
+                padding: 10px 20px;
+            }
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <canvas id="spaceCanvas"></canvas>
 
     <header>
-      <div class="logo">Q</div>
-      <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+        <div class="logo">Q</div>
+        <div class="menu-toggle" onclick="toggleMenu()">☰</div>
     </header>
 
     <nav class="nav-links">
-      <a href="#about" onclick="toggleMenu()">About Me</a>
-      <a href="#contact" onclick="toggleMenu()">Contact</a>
-      <a
-        href="https://github.com/subatomicERROR"
-        target="_blank"
-        rel="noopener noreferrer"
-        >GitHub</a
-      >
+        <a href="#about" onclick="toggleMenu()">About Me</a>
+        <a href="#contact" onclick="toggleMenu()">Contact</a>
+        <a
+            href="https://github.com/subatomicERROR"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+        >
     </nav>
 
     <section class="hero">
-      <h1>Instagram Portal</h1>
-      <div class="links">
-        <a
-          href="https://www.instagram.com/esotericintelligence"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="link"
-          onclick="openInBrowser('https://www.instagram.com/esotericintelligence')"
-          >Tranquil Tribe</a
-        >
-        <a
-          href="https://www.instagram.com/xyashhxx"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="link"
-          onclick="openInBrowser('https://www.instagram.com/xyashhxx')"
-          >Personal Account</a
-        >
-        <a
-          href="https://www.instagram.com/333am.vision"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="link"
-          onclick="openInBrowser('https://www.instagram.com/333am.vision')"
-          >Stoic Army</a
-        >
-        <a
-          href="https://www.instagram.com/subatomicerror"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="link"
-          onclick="openInBrowser('https://www.instagram.com/subatomicerror')"
-          >Quantum Tech <span>[coming soon]</span></a
-        >
-      </div>
-      <a href="#" class="travel-button" onclick="startTravel(event)">Travel</a>
+        <h1>Instagram Portal</h1>
+        <div class="links">
+            <a
+                href="https://www.instagram.com/esotericintelligence"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="link"
+                onclick="openInBrowser('https://www.instagram.com/esotericintelligence')"
+                >Tranquil Tribe</a
+            >
+            <a
+                href="https://www.instagram.com/xyashhxx"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="link"
+                onclick="openInBrowser('https://www.instagram.com/xyashhxx')"
+                >Personal Account</a
+            >
+            <a
+                href="https://www.instagram.com/333am.vision"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="link"
+                onclick="openInBrowser('https://www.instagram.com/333am.vision')"
+                >Stoic Army</a
+            >
+            <a
+                href="https://www.instagram.com/subatomicerror"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="link"
+                onclick="openInBrowser('https://www.instagram.com/subatomicerror')"
+                >Quantum Tech <span>[coming soon]</span></a
+            >
+        </div>
+        <a href="#" class="travel-button" onclick="startTravel(event)">Travel</a>
     </section>
 
     <!-- About Me Section -->
     <section class="section" id="about">
-      <h1>About Me</h1>
-      <p>
-        I’m Yash Ramteke, a curious explorer of quantum science and AI. I enjoy
-        delving into complex equations and using AI to enhance my understanding.
-        My focus is on harnessing the power of consciousness and unlocking the
-        mind’s potential.
-      </p>
+        <h1>About Me</h1>
+        <p>
+            I’m Yash Ramteke, a curious explorer of quantum science and AI. I enjoy
+            delving into complex equations and using AI to enhance my understanding.
+            My focus is on harnessing the power of consciousness and unlocking the
+            mind’s potential.
+        </p>
     </section>
 
     <!-- Contact Me Section -->
     <section class="section" id="contact">
-      <h1>Contact Me</h1>
-      <div class="button-container">
-        <a
-          href="mailto:iamyash.creator@gmail.com?subject=Inquiry from Website&body=Hello Yash,"
-          class="button"
-          >Email Me</a
-        >
-        <a href="https://wa.me/918968568582?text=Hello%20Yash," class="button"
-          >WhatsApp Me</a
-        >
-        <a
-          href="https://ig.me/j/AbaOz7a2KGOuJVsM"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button"
-          onclick="openInBrowser('https://ig.me/j/AbaOz7a2KGOuJVsM')"
-          >Join Group <span>new</span></a
-        >
-      </div>
+        <h1>Contact Me</h1>
+        <div class="button-container">
+            <a
+                href="mailto:iamyash.creator@gmail.com?subject=Inquiry from Website&body=Hello Yash,"
+                class="button"
+                >Email Me</a
+            >
+            <a href="https://wa.me/918968568582?text=Hello%20Yash," class="button"
+                >WhatsApp Me</a
+            >
+            <a
+                href="https://ig.me/j/AbaOz7a2KGOuJVsM"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="button"
+                onclick="openInBrowser('https://ig.me/j/AbaOz7a2KGOuJVsM')"
+                >Join Group <span>new</span></a
+            >
+        </div>
     </section>
 
     <footer>
-      <p>&copy; 2025 Yash Ramteke | All Rights Reserved</p>
+        <p>&copy; 2025 Yash Ramteke | All Rights Reserved</p>
     </footer>
 
     <div
-      class="exit-icon floating-icon"
-      onclick="exitTravel()"
-      style="display: none"
+        class="exit-icon floating-icon"
+        onclick="exitTravel()"
+        style="display: none"
     ></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/FirstPersonControls.js"></script>
     <script>
-      let isClicking = false;
-      let speed = 2;
-      let controls;
-      let userStartPosition;
-      let paused = false;
-      let originalMovementSpeed;
-      let chakraOrbs = [];
+        let isClicking = false;
+        let speed = 2;
+        let controls;
+        let userStartPosition;
+        let paused = false;
+        let originalMovementSpeed;
+        let chakraOrbs = [];
 
-      function toggleMenu() {
-        const navLinks = document.querySelector(".nav-links");
-        navLinks.classList.toggle("nav-active");
+        function toggleMenu() {
+            const navLinks = document.querySelector(".nav-links");
+            navLinks.classList.toggle("nav-active");
 
-        // Close the menu when clicking outside
-        document.addEventListener("click", (e) => {
-          if (
-            !navLinks.contains(e.target) &&
-            !e.target.classList.contains("menu-toggle")
-          ) {
-            navLinks.classList.remove("nav-active");
-          }
-        });
-      }
-
-      // Ensure links open in a new tab and close the menu
-      document.querySelectorAll(".nav-links a").forEach((link) => {
-        link.addEventListener("click", (e) => {
-          if (e.target.href) {
-            e.preventDefault();
-            window.open(e.target.href, "_blank");
-            toggleMenu();
-          }
-        });
-      });
-
-      function openInBrowser(url) {
-        window.open(url, "_blank");
-      }
-
-      // Handle click events to increase speed
-      document.addEventListener("mousedown", () => {
-        isClicking = true;
-        speed = parseInt(document.getElementById("velocitySlider").value);
-      });
-
-      document.addEventListener("mouseup", () => {
-        isClicking = false;
-        speed = 2; // Return to normal speed
-      });
-
-      // Handle touch events for mobile
-      document.addEventListener("touchstart", () => {
-        isClicking = true;
-        speed = parseInt(document.getElementById("velocitySlider").value);
-      });
-
-      document.addEventListener("touchend", () => {
-        isClicking = false;
-        speed = 2; // Return to normal speed
-      });
-
-      // Initialize the 3D scene
-      function initScene() {
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(
-          75,
-          window.innerWidth / window.innerHeight,
-          0.1,
-          1000
-        );
-        const renderer = new THREE.WebGLRenderer({
-          canvas: document.getElementById("spaceCanvas"),
-          antialias: true,
-        });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-
-        // Add a nebula background
-        const nebulaTexture = new THREE.TextureLoader().load(
-          "https://threejsfundamentals.org/threejs/resources/images/nebula.jpg"
-        );
-        const nebulaMaterial = new THREE.MeshBasicMaterial({
-          map: nebulaTexture,
-          side: THREE.BackSide,
-        });
-        const nebulaGeometry = new THREE.SphereGeometry(1000, 60, 40);
-        const nebula = new THREE.Mesh(nebulaGeometry, nebulaMaterial);
-        scene.add(nebula);
-
-        // Create a reduced star field with twinkling effect
-        const starGeometry = new THREE.BufferGeometry();
-        const starVertices = [];
-        for (let i = 0; i < 5000; i++) {
-          const x = (Math.random() - 0.5) * 2000;
-          const y = (Math.random() - 0.5) * 2000;
-          const z = (Math.random() - 0.5) * 2000;
-          starVertices.push(x, y, z);
+            // Close the menu when clicking outside
+            document.addEventListener("click", (e) => {
+                if (
+                    !navLinks.contains(e.target) &&
+                    !e.target.classList.contains("menu-toggle")
+                ) {
+                    navLinks.classList.remove("nav-active");
+                }
+            });
         }
-        starGeometry.setAttribute(
-          "position",
-          new THREE.Float32BufferAttribute(starVertices, 3)
-        );
-        const starMaterial = new THREE.PointsMaterial({
-          color: 0xffffff,
-          size: 0.1,
-        });
-        const stars = new THREE.Points(starGeometry, starMaterial);
-        scene.add(stars);
 
-        // Add glowing orbs representing chakras
-        function addGlowingOrb(radius, position, color, speed) {
-          const orbGeometry = new THREE.SphereGeometry(radius, 32, 32);
-          const orbMaterial = new THREE.ShaderMaterial({
-            uniforms: {
-              color: { value: new THREE.Color(color) },
-              time: { value: 0 },
-              glowIntensity: { value: 1 },
-            },
-            vertexShader: `
+        // Ensure links open in a new tab and close the menu
+        document.querySelectorAll(".nav-links a").forEach((link) => {
+            link.addEventListener("click", (e) => {
+                if (e.target.href) {
+                    e.preventDefault();
+                    window.open(e.target.href, "_blank");
+                    toggleMenu();
+                }
+            });
+        });
+
+        function openInBrowser(url) {
+            window.open(url, "_blank");
+        }
+
+        // Handle touch events for mobile
+        document.addEventListener("touchstart", (event) => {
+            isClicking = true;
+            speed = 2; // Set speed directly for touch
+            controls.handleTouchStart(event.touches[0]);
+        });
+
+        document.addEventListener("touchend", () => {
+            isClicking = false;
+            speed = 2; // Return to normal speed
+        });
+
+        document.addEventListener("touchmove", (event) => {
+            controls.handleTouchMove(event.touches[0]);
+        });
+
+        // Initialize the 3D scene
+        function initScene() {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(
+                75,
+                window.innerWidth / window.innerHeight,
+                0.1,
+                1000
+            );
+            const renderer = new THREE.WebGLRenderer({
+                canvas: document.getElementById("spaceCanvas"),
+                antialias: true,
+            });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            // Add a nebula background
+            const nebulaTexture = new THREE.TextureLoader().load(
+                "https://threejsfundamentals.org/threejs/resources/images/nebula.jpg"
+            );
+            const nebulaMaterial = new THREE.MeshBasicMaterial({
+                map: nebulaTexture,
+                side: THREE.BackSide,
+            });
+            const nebulaGeometry = new THREE.SphereGeometry(1000, 60, 40);
+            const nebula = new THREE.Mesh(nebulaGeometry, nebulaMaterial);
+            scene.add(nebula);
+
+            // Create a reduced star field with twinkling effect
+            const starGeometry = new THREE.BufferGeometry();
+            const starVertices = [];
+            for (let i = 0; i < 5000; i++) {
+                const x = (Math.random() - 0.5) * 2000;
+                const y = (Math.random() - 0.5) * 2000;
+                const z = (Math.random() - 0.5) * 2000;
+                starVertices.push(x, y, z);
+            }
+            starGeometry.setAttribute(
+                "position",
+                new THREE.Float32BufferAttribute(starVertices, 3)
+            );
+            const starMaterial = new THREE.PointsMaterial({
+                color: 0xffffff,
+                size: 0.1,
+            });
+            const stars = new THREE.Points(starGeometry, starMaterial);
+            scene.add(stars);
+
+            // Add glowing orbs representing chakras
+            function addGlowingOrb(radius, position, color, speed) {
+                const orbGeometry = new THREE.SphereGeometry(radius, 32, 32);
+                const orbMaterial = new THREE.ShaderMaterial({
+                    uniforms: {
+                        color: { value: new THREE.Color(color) },
+                        time: { value: 0 },
+                        glowIntensity: { value: 1 },
+                    },
+                    vertexShader: `
                         varying vec3 vNormal;
                         void main() {
                             vNormal = normalize(normalMatrix * normal);
                             gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
                         }
                     `,
-            fragmentShader: `
+                    fragmentShader: `
                         uniform vec3 color;
                         uniform float time;
                         uniform float glowIntensity;
@@ -497,273 +491,273 @@
                             gl_FragColor.a *= smoothstep(0.0, 1.0, intensity);
                         }
                     `,
-            transparent: true,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false,
-          });
-          const orb = new THREE.Mesh(orbGeometry, orbMaterial);
-          orb.position.set(position.x, position.y, position.z);
-          scene.add(orb);
+                    transparent: true,
+                    blending: THREE.AdditiveBlending,
+                    depthWrite: false,
+                });
+                const orb = new THREE.Mesh(orbGeometry, orbMaterial);
+                orb.position.set(position.x, position.y, position.z);
+                scene.add(orb);
 
-          const orbit = new THREE.Object3D();
-          orbit.add(orb);
-          scene.add(orbit);
+                const orbit = new THREE.Object3D();
+                orbit.add(orb);
+                scene.add(orbit);
 
-          function animateOrb() {
-            orbit.rotation.y += speed;
-            orb.rotation.y += 0.01;
-            orb.material.uniforms.time.value += 0.01;
-          }
+                function animateOrb() {
+                    orbit.rotation.y += speed;
+                    orb.rotation.y += 0.01;
+                    orb.material.uniforms.time.value += 0.01;
+                }
 
-          chakraOrbs.push({ orb, animate: animateOrb });
-          return animateOrb;
+                chakraOrbs.push({ orb, animate: animateOrb });
+                return animateOrb;
+            }
+
+            const chakras = [
+                {
+                    radius: 5,
+                    position: { x: 0, y: -200, z: 0 },
+                    color: 0xff0000,
+                    speed: 0.005,
+                }, // Root Chakra
+                {
+                    radius: 6,
+                    position: { x: 0, y: -100, z: 0 },
+                    color: 0xffa500,
+                    speed: 0.005,
+                }, // Sacral Chakra
+                {
+                    radius: 7,
+                    position: { x: 0, y: 0, z: 0 },
+                    color: 0xffff00,
+                    speed: 0.005,
+                }, // Solar Plexus Chakra
+                {
+                    radius: 8,
+                    position: { x: 0, y: 100, z: 0 },
+                    color: 0x00ff00,
+                    speed: 0.005,
+                }, // Heart Chakra
+                {
+                    radius: 9,
+                    position: { x: 0, y: 200, z: 0 },
+                    color: 0x00ffff,
+                    speed: 0.005,
+                }, // Throat Chakra
+                {
+                    radius: 10,
+                    position: { x: 0, y: 300, z: 0 },
+                    color: 0x0000ff,
+                    speed: 0.005,
+                }, // Third Eye Chakra
+                {
+                    radius: 11,
+                    position: { x: 0, y: 400, z: 0 },
+                    color: 0xff00ff,
+                    speed: 0.005,
+                }, // Crown Chakra
+            ];
+
+            const orbAnimations = chakras.map((chakra) =>
+                addGlowingOrb(
+                    chakra.radius,
+                    chakra.position,
+                    chakra.color,
+                    chakra.speed
+                )
+            );
+
+            // Position the camera
+            camera.position.z = 800;
+
+            // Add First Person Controls
+            controls = new THREE.FirstPersonControls(camera, renderer.domElement);
+            controls.movementSpeed = 100;
+            controls.lookSpeed = 0.125;
+            controls.noFly = false;
+            controls.lookVertical = true;
+            controls.constrainVerticalLook = false;
+            controls.verticalMin = 0;
+            controls.verticalMax = Math.PI;
+            controls.lon = -90;
+            controls.lat = 0;
+            controls.autoForward = false;
+
+            // Add point lights
+            const light1 = new THREE.PointLight(0xffffff, 1, 1000);
+            light1.position.set(0, 0, 500);
+            scene.add(light1);
+
+            const light2 = new THREE.PointLight(0xffffff, 1, 1000);
+            light2.position.set(0, 0, -500);
+            scene.add(light2);
+
+            // Add ambient light
+            const ambientLight = new THREE.AmbientLight(0x404040); // soft white light
+            scene.add(ambientLight);
+
+            // Add fog for depth
+            scene.fog = new THREE.FogExp2(0x000000, 0.001);
+
+            // Animation loop
+            function animate() {
+                requestAnimationFrame(animate);
+
+                if (!paused) {
+                    // Update controls
+                    controls.update(0.1);
+
+                    // Rotate the stars slightly to create a dynamic effect
+                    stars.rotation.x += 0.0001;
+                    stars.rotation.y += 0.0001;
+
+                    // Animate orbs
+                    orbAnimations.forEach((animateOrb) => animateOrb());
+                }
+
+                renderer.render(scene, camera);
+            }
+
+            animate();
+
+            // Handle window resize
+            window.addEventListener("resize", () => {
+                const width = window.innerWidth;
+                const height = window.innerHeight;
+                renderer.setSize(width, height);
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+            });
+
+            // Ensure the canvas captures mouse and touch events
+            document
+                .getElementById("spaceCanvas")
+                .addEventListener("mousemove", (event) => {
+                    controls.handleMouseMove(event);
+                });
+
+            document
+                .getElementById("spaceCanvas")
+                .addEventListener("mousedown", (event) => {
+                    controls.handleMouseDown(event);
+                });
+
+            document
+                .getElementById("spaceCanvas")
+                .addEventListener("mouseup", (event) => {
+                    controls.handleMouseUp(event);
+                });
+
+            document
+                .getElementById("spaceCanvas")
+                .addEventListener("touchstart", (event) => {
+                    controls.handleTouchStart(event.touches[0]);
+                });
+
+            document
+                .getElementById("spaceCanvas")
+                .addEventListener("touchmove", (event) => {
+                    controls.handleTouchMove(event.touches[0]);
+                });
+
+            document
+                .getElementById("spaceCanvas")
+                .addEventListener("touchend", (event) => {
+                    controls.handleTouchEnd(event.touches[0]);
+                });
+
+            return renderer;
         }
 
-        const chakras = [
-          {
-            radius: 5,
-            position: { x: 0, y: -200, z: 0 },
-            color: 0xff0000,
-            speed: 0.005,
-          }, // Root Chakra
-          {
-            radius: 6,
-            position: { x: 0, y: -100, z: 0 },
-            color: 0xffa500,
-            speed: 0.005,
-          }, // Sacral Chakra
-          {
-            radius: 7,
-            position: { x: 0, y: 0, z: 0 },
-            color: 0xffff00,
-            speed: 0.005,
-          }, // Solar Plexus Chakra
-          {
-            radius: 8,
-            position: { x: 0, y: 100, z: 0 },
-            color: 0x00ff00,
-            speed: 0.005,
-          }, // Heart Chakra
-          {
-            radius: 9,
-            position: { x: 0, y: 200, z: 0 },
-            color: 0x00ffff,
-            speed: 0.005,
-          }, // Throat Chakra
-          {
-            radius: 10,
-            position: { x: 0, y: 300, z: 0 },
-            color: 0x0000ff,
-            speed: 0.005,
-          }, // Third Eye Chakra
-          {
-            radius: 11,
-            position: { x: 0, y: 400, z: 0 },
-            color: 0xff00ff,
-            speed: 0.005,
-          }, // Crown Chakra
-        ];
+        // Start the travel experience
+        function startTravel(event) {
+            event.preventDefault(); // Prevent default anchor behavior
+            const canvas = document.getElementById("spaceCanvas");
+            const heroSection = document.querySelector(".hero");
+            const sections = document.querySelectorAll(".section");
+            const footer = document.querySelector("footer");
 
-        const orbAnimations = chakras.map((chakra) =>
-          addGlowingOrb(
-            chakra.radius,
-            chakra.position,
-            chakra.color,
-            chakra.speed
-          )
-        );
+            // Save user's starting position
+            userStartPosition = new THREE.Vector3(0, 0, 800);
 
-        // Position the camera
-        camera.position.z = 800;
+            // Fade out hero section, other sections, and footer
+            heroSection.style.transition = "opacity 1s ease-in-out";
+            sections.forEach(
+                (section) => (section.style.transition = "opacity 1s ease-in-out")
+            );
+            footer.style.transition = "opacity 1s ease-in-out";
 
-        // Add First Person Controls
-        controls = new THREE.FirstPersonControls(camera, renderer.domElement);
-        controls.movementSpeed = 100;
-        controls.lookSpeed = 0.125;
-        controls.noFly = false;
-        controls.lookVertical = true;
-        controls.constrainVerticalLook = false;
-        controls.verticalMin = 0;
-        controls.verticalMax = Math.PI;
-        controls.lon = -90;
-        controls.lat = 0;
-        controls.autoForward = false;
+            heroSection.style.opacity = 0;
+            sections.forEach((section) => (section.style.opacity = 0));
+            footer.style.opacity = 0;
 
-        // Add point lights
-        const light1 = new THREE.PointLight(0xffffff, 1, 1000);
-        light1.position.set(0, 0, 500);
-        scene.add(light1);
+            // Show the canvas after fading out
+            setTimeout(() => {
+                canvas.style.display = "block"; // Show the canvas
+                heroSection.style.display = "none"; // Hide the hero section
+                sections.forEach((section) => (section.style.display = "none")); // Hide other sections
+                footer.style.display = "none"; // Hide the footer
+            }, 1000); // 1 second delay for fade out
 
-        const light2 = new THREE.PointLight(0xffffff, 1, 1000);
-        light2.position.set(0, 0, -500);
-        scene.add(light2);
+            // Initialize the 3D scene
+            setTimeout(() => {
+                initScene();
+            }, 1500); // 1.5 seconds delay for initialization after showing canvas
 
-        // Add ambient light
-        const ambientLight = new THREE.AmbientLight(0x404040); // soft white light
-        scene.add(ambientLight);
+            // Show exit, pause, and X icons
+            document.querySelector(".exit-icon").style.display = "block";
 
-        // Add fog for depth
-        scene.fog = new THREE.FogExp2(0x000000, 0.001);
-
-        // Animation loop
-        function animate() {
-          requestAnimationFrame(animate);
-
-          if (!paused) {
-            // Update controls
-            controls.update(0.1);
-
-            // Rotate the stars slightly to create a dynamic effect
-            stars.rotation.x += 0.0001;
-            stars.rotation.y += 0.0001;
-
-            // Animate orbs
-            orbAnimations.forEach((animateOrb) => animateOrb());
-          }
-
-          renderer.render(scene, camera);
+            // Hide settings menu
+            document.querySelector(".settings-menu").style.display = "none";
         }
 
-        animate();
+        // Exit the travel experience
+        function exitTravel() {
+            const canvas = document.getElementById("spaceCanvas");
+            const heroSection = document.querySelector(".hero");
+            const sections = document.querySelectorAll(".section");
+            const footer = document.querySelector("footer");
 
-        // Handle window resize
-        window.addEventListener("resize", () => {
-          const width = window.innerWidth;
-          const height = window.innerHeight;
-          renderer.setSize(width, height);
-          camera.aspect = width / height;
-          camera.updateProjectionMatrix();
+            // Hide the canvas
+            canvas.style.display = "none";
+
+            // Fade in hero section, other sections, and footer
+            heroSection.style.display = "flex";
+            sections.forEach((section) => (section.style.display = "block"));
+            footer.style.display = "block";
+            heroSection.style.opacity = 1;
+            sections.forEach((section) => (section.style.opacity = 1));
+            footer.style.opacity = 1;
+
+            // Hide icons
+            document.querySelector(".exit-icon").style.display = "none";
+
+            // Show settings menu
+            document.querySelector(".settings-menu").style.display = "block";
+        }
+
+        // Add animative effects
+        document
+            .querySelectorAll(".link, .button, .travel-button")
+            .forEach((element) => {
+                element.addEventListener("mouseover", () => {
+                    element.style.transform = "scale(1.1)";
+                    element.style.boxShadow = "0 0 15px rgba(255, 255, 255, 0.7)";
+                });
+
+                element.addEventListener("mouseout", () => {
+                    element.style.transform = "scale(1)";
+                    element.style.boxShadow = "none";
+                });
+            });
+
+        // Add glitch effect on click
+        document.addEventListener("click", () => {
+            document.body.style.filter = "grayscale(0.2)";
+            setTimeout(() => {
+                document.body.style.filter = "none";
+            }, 200);
         });
-
-        // Ensure the canvas captures mouse and touch events
-        document
-          .getElementById("spaceCanvas")
-          .addEventListener("mousemove", (event) => {
-            controls.handleMouseMove(event);
-          });
-
-        document
-          .getElementById("spaceCanvas")
-          .addEventListener("mousedown", (event) => {
-            controls.handleMouseDown(event);
-          });
-
-        document
-          .getElementById("spaceCanvas")
-          .addEventListener("mouseup", (event) => {
-            controls.handleMouseUp(event);
-          });
-
-        document
-          .getElementById("spaceCanvas")
-          .addEventListener("touchstart", (event) => {
-            controls.handleTouchStart(event);
-          });
-
-        document
-          .getElementById("spaceCanvas")
-          .addEventListener("touchmove", (event) => {
-            controls.handleTouchMove(event);
-          });
-
-        document
-          .getElementById("spaceCanvas")
-          .addEventListener("touchend", (event) => {
-            controls.handleTouchEnd(event);
-          });
-
-        return renderer;
-      }
-
-      // Start the travel experience
-      function startTravel(event) {
-        event.preventDefault(); // Prevent default anchor behavior
-        const canvas = document.getElementById("spaceCanvas");
-        const heroSection = document.querySelector(".hero");
-        const sections = document.querySelectorAll(".section");
-        const footer = document.querySelector("footer");
-
-        // Save user's starting position
-        userStartPosition = new THREE.Vector3(0, 0, 800);
-
-        // Fade out hero section, other sections, and footer
-        heroSection.style.transition = "opacity 1s ease-in-out";
-        sections.forEach(
-          (section) => (section.style.transition = "opacity 1s ease-in-out")
-        );
-        footer.style.transition = "opacity 1s ease-in-out";
-
-        heroSection.style.opacity = 0;
-        sections.forEach((section) => (section.style.opacity = 0));
-        footer.style.opacity = 0;
-
-        // Show the canvas after fading out
-        setTimeout(() => {
-          canvas.style.display = "block"; // Show the canvas
-          heroSection.style.display = "none"; // Hide the hero section
-          sections.forEach((section) => (section.style.display = "none")); // Hide other sections
-          footer.style.display = "none"; // Hide the footer
-        }, 1000); // 1 second delay for fade out
-
-        // Initialize the 3D scene
-        setTimeout(() => {
-          initScene();
-        }, 1500); // 1.5 seconds delay for initialization after showing canvas
-
-        // Show exit, pause, and X icons
-        document.querySelector(".exit-icon").style.display = "block";
-
-        // Hide settings menu
-        document.querySelector(".settings-menu").style.display = "none";
-      }
-
-      // Exit the travel experience
-      function exitTravel() {
-        const canvas = document.getElementById("spaceCanvas");
-        const heroSection = document.querySelector(".hero");
-        const sections = document.querySelectorAll(".section");
-        const footer = document.querySelector("footer");
-
-        // Hide the canvas
-        canvas.style.display = "none";
-
-        // Fade in hero section, other sections, and footer
-        heroSection.style.display = "flex";
-        sections.forEach((section) => (section.style.display = "block"));
-        footer.style.display = "block";
-        heroSection.style.opacity = 1;
-        sections.forEach((section) => (section.style.opacity = 1));
-        footer.style.opacity = 1;
-
-        // Hide icons
-        document.querySelector(".exit-icon").style.display = "none";
-
-        // Show settings menu
-        document.querySelector(".settings-menu").style.display = "block";
-      }
-
-      // Add animative effects
-      document
-        .querySelectorAll(".link, .button, .travel-button")
-        .forEach((element) => {
-          element.addEventListener("mouseover", () => {
-            element.style.transform = "scale(1.1)";
-            element.style.boxShadow = "0 0 15px rgba(255, 255, 255, 0.7)";
-          });
-
-          element.addEventListener("mouseout", () => {
-            element.style.transform = "scale(1)";
-            element.style.boxShadow = "none";
-          });
-        });
-
-      // Add glitch effect on click
-      document.addEventListener("click", () => {
-        document.body.style.filter = "grayscale(0.2)";
-        setTimeout(() => {
-          document.body.style.filter = "none";
-        }, 200);
-      });
     </script>
-  </body>
+</body>
 </html>

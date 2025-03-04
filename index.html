@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quantum Mind - Dark Futuristic Galaxy</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
@@ -363,20 +363,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/FirstPersonControls.js"></script>
     <script>
+        let isClicking = false;
+        let speed = 2;
         let controls;
-        let isMovingForward = false;
+        let userStartPosition;
+        let paused = false;
+        let originalMovementSpeed;
+        let chakraOrbs = [];
         let touchStartX = 0;
         let touchStartY = 0;
         let touchStartTime = 0;
         let touchEndTime = 0;
         let touchDuration = 0;
         let touchMoved = false;
-        let doubleTapTimeout;
-        let doubleTapCount = 0;
         let swipeThreshold = 50; // Minimum swipe distance in pixels
-        let moveSpeed = 100;
-        let moveDirection = new THREE.Vector3();
-        let moveControl = null;
 
         function toggleMenu() {
             const navLinks = document.querySelector(".nav-links");
@@ -415,23 +415,6 @@
                 touchStartY = event.touches[0].clientY;
                 touchStartTime = Date.now();
                 touchMoved = false;
-
-                // Check for double tap
-                if (doubleTapTimeout) {
-                    clearTimeout(doubleTapTimeout);
-                    doubleTapCount++;
-                } else {
-                    doubleTapCount = 1;
-                }
-
-                doubleTapTimeout = setTimeout(() => {
-                    doubleTapCount = 0;
-                }, 300);
-
-                if (doubleTapCount === 2) {
-                    isMovingForward = true;
-                    controls.movementSpeed = moveSpeed;
-                }
             }
         });
 
@@ -459,27 +442,18 @@
                         // Vertical swipe
                         if (deltaY > 0) {
                             // Down swipe
-                            controls.object.rotation.x += Math.PI / 32;
+                            controls.object.position.y -= 10;
                         } else {
                             // Up swipe
-                            controls.object.rotation.x -= Math.PI / 32;
+                            controls.object.position.y += 10;
                         }
                     }
                 } else {
                     // Tap detected
                     if (touchDuration < 300 && Math.abs(deltaX) < 5 && Math.abs(deltaY) < 5) {
-                        // Single tap
-                        if (doubleTapCount === 1) {
-                            doubleTapCount = 0;
-                        }
+                        // Move forward
+                        controls.movementSpeed = 100;
                     }
-                }
-
-                if (isMovingForward && touchDuration < 300) {
-                    // Stop moving forward on touch end
-                    isMovingForward = false;
-                    controls.movementSpeed = 0;
-                    moveControl = null;
                 }
             }
         });
@@ -487,124 +461,6 @@
         document.addEventListener("touchmove", (event) => {
             if (event.touches.length === 1) {
                 touchMoved = true;
-                const currentX = event.touches[0].clientX;
-                const currentY = event.touches[0].clientY;
-                const deltaX = currentX - touchStartX;
-                const deltaY = currentY - touchStartY;
-
-                if (isMovingForward) {
-                    // Adjust movement direction based on swipe
-                    controls.movementSpeed = moveSpeed;
-                    moveDirection.set(-deltaX, deltaY, 0).normalize();
-                    controls.object.getWorldDirection(moveDirection);
-                    moveControl = moveDirection;
-                } else {
-                    // Smooth camera rotation
-                    controls.object.rotation.y -= deltaX * 0.01;
-                    controls.object.rotation.x += deltaY * 0.01;
-                }
-
-                touchStartX = currentX;
-                touchStartY = currentY;
-            }
-        });
-
-        // Handle mouse events for PC
-        document.addEventListener("mousedown", (event) => {
-            if (event.button === 0) { // Left mouse button
-                touchStartX = event.clientX;
-                touchStartY = event.clientY;
-                touchStartTime = Date.now();
-                touchMoved = false;
-
-                // Check for double click
-                if (doubleTapTimeout) {
-                    clearTimeout(doubleTapTimeout);
-                    doubleTapCount++;
-                } else {
-                    doubleTapCount = 1;
-                }
-
-                doubleTapTimeout = setTimeout(() => {
-                    doubleTapCount = 0;
-                }, 300);
-
-                if (doubleTapCount === 2) {
-                    isMovingForward = true;
-                    controls.movementSpeed = moveSpeed;
-                }
-            }
-        });
-
-        document.addEventListener("mouseup", (event) => {
-            if (event.button === 0) { // Left mouse button
-                touchEndTime = Date.now();
-                touchDuration = touchEndTime - touchStartTime;
-                const deltaX = event.clientX - touchStartX;
-                const deltaY = event.clientY - touchStartY;
-
-                if (touchMoved) {
-                    // Mouse drag detected
-                    if (Math.abs(deltaX) > swipeThreshold) {
-                        // Horizontal drag
-                        if (deltaX > 0) {
-                            // Right drag
-                            controls.object.rotation.y -= Math.PI / 32;
-                        } else {
-                            // Left drag
-                            controls.object.rotation.y += Math.PI / 32;
-                        }
-                    } else if (Math.abs(deltaY) > swipeThreshold) {
-                        // Vertical drag
-                        if (deltaY > 0) {
-                            // Down drag
-                            controls.object.rotation.x += Math.PI / 32;
-                        } else {
-                            // Up drag
-                            controls.object.rotation.x -= Math.PI / 32;
-                        }
-                    }
-                } else {
-                    // Click detected
-                    if (touchDuration < 300 && Math.abs(deltaX) < 5 && Math.abs(deltaY) < 5) {
-                        // Single click
-                        if (doubleTapCount === 1) {
-                            doubleTapCount = 0;
-                        }
-                    }
-                }
-
-                if (isMovingForward && touchDuration < 300) {
-                    // Stop moving forward on mouse up
-                    isMovingForward = false;
-                    controls.movementSpeed = 0;
-                    moveControl = null;
-                }
-            }
-        });
-
-        document.addEventListener("mousemove", (event) => {
-            if (event.buttons === 1) { // Left mouse button is pressed
-                touchMoved = true;
-                const currentX = event.clientX;
-                const currentY = event.clientY;
-                const deltaX = currentX - touchStartX;
-                const deltaY = currentY - touchStartY;
-
-                if (isMovingForward) {
-                    // Adjust movement direction based on drag
-                    controls.movementSpeed = moveSpeed;
-                    moveDirection.set(-deltaX, deltaY, 0).normalize();
-                    controls.object.getWorldDirection(moveDirection);
-                    moveControl = moveDirection;
-                } else {
-                    // Smooth camera rotation
-                    controls.object.rotation.y -= deltaX * 0.01;
-                    controls.object.rotation.x += deltaY * 0.01;
-                }
-
-                touchStartX = currentX;
-                touchStartY = currentY;
             }
         });
 
@@ -700,6 +556,7 @@
                     orb.material.uniforms.time.value += 0.01;
                 }
 
+                chakraOrbs.push({ orb, animate: animateOrb });
                 return animateOrb;
             }
 
@@ -762,7 +619,7 @@
 
             // Add First Person Controls
             controls = new THREE.FirstPersonControls(camera, renderer.domElement);
-            controls.movementSpeed = 0;
+            controls.movementSpeed = 100;
             controls.lookSpeed = 0.125;
             controls.noFly = false;
             controls.lookVertical = true;
@@ -793,15 +650,17 @@
             function animate() {
                 requestAnimationFrame(animate);
 
-                // Update controls
-                controls.update(0.1);
+                if (!paused) {
+                    // Update controls
+                    controls.update(0.1);
 
-                // Rotate the stars slightly to create a dynamic effect
-                stars.rotation.x += 0.0001;
-                stars.rotation.y += 0.0001;
+                    // Rotate the stars slightly to create a dynamic effect
+                    stars.rotation.x += 0.0001;
+                    stars.rotation.y += 0.0001;
 
-                // Animate orbs
-                orbAnimations.forEach((animateOrb) => animateOrb());
+                    // Animate orbs
+                    orbAnimations.forEach((animateOrb) => animateOrb());
+                }
 
                 renderer.render(scene, camera);
             }
@@ -817,6 +676,90 @@
                 camera.updateProjectionMatrix();
             });
 
+            // Ensure the canvas captures mouse and touch events
+            document
+                .getElementById("spaceCanvas")
+                .addEventListener("mousemove", (event) => {
+                    controls.handleMouseMove(event);
+                });
+
+            document
+                .getElementById("spaceCanvas")
+                .addEventListener("mousedown", (event) => {
+                    controls.handleMouseDown(event);
+                });
+
+            document
+                .getElementById("spaceCanvas")
+                .addEventListener("mouseup", (event) => {
+                    controls.handleMouseUp(event);
+                });
+
+            document
+                .getElementById("spaceCanvas")
+                .addEventListener("touchstart", (event) => {
+                if (event.touches.length === 1) {
+                    touchStartX = event.touches[0].clientX;
+                    touchStartY = event.touches[0].clientY;
+                    touchStartTime = Date.now();
+                    touchMoved = false;
+                    controls.handleTouchStart(event.touches[0]);
+                }
+            });
+
+            document
+                .getElementById("spaceCanvas")
+                .addEventListener("touchend", (event) => {
+                if (event.changedTouches.length === 1) {
+                    touchEndTime = Date.now();
+                    touchDuration = touchEndTime - touchStartTime;
+                    const touchEndX = event.changedTouches[0].clientX;
+                    const touchEndY = event.changedTouches[0].clientY;
+                    const deltaX = touchEndX - touchStartX;
+                    const deltaY = touchEndY - touchStartY;
+
+                    if (touchMoved) {
+                        // Swipe detected
+                        if (Math.abs(deltaX) > swipeThreshold) {
+                            // Horizontal swipe
+                            if (deltaX > 0) {
+                                // Right swipe
+                                controls.object.rotation.y -= Math.PI / 32;
+                            } else {
+                                // Left swipe
+                                controls.object.rotation.y += Math.PI / 32;
+                            }
+                        } else if (Math.abs(deltaY) > swipeThreshold) {
+                            // Vertical swipe
+                            if (deltaY > 0) {
+                                // Down swipe
+                                controls.object.position.y -= 10;
+                            } else {
+                                // Up swipe
+                                controls.object.position.y += 10;
+                            }
+                        }
+                    } else {
+                        // Tap detected
+                        if (touchDuration < 300 && Math.abs(deltaX) < 5 && Math.abs(deltaY) < 5) {
+                            // Move forward
+                            controls.movementSpeed = 100;
+                        }
+                    }
+
+                    controls.handleTouchEnd(event.changedTouches[0]);
+                }
+            });
+
+            document
+                .getElementById("spaceCanvas")
+                .addEventListener("touchmove", (event) => {
+                if (event.touches.length === 1) {
+                    touchMoved = true;
+                    controls.handleTouchMove(event.touches[0]);
+                }
+            });
+
             return renderer;
         }
 
@@ -827,6 +770,9 @@
             const heroSection = document.querySelector(".hero");
             const sections = document.querySelectorAll(".section");
             const footer = document.querySelector("footer");
+
+            // Save user's starting position
+            userStartPosition = new THREE.Vector3(0, 0, 800);
 
             // Fade out hero section, other sections, and footer
             heroSection.style.transition = "opacity 1s ease-in-out";

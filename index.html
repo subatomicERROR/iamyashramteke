@@ -509,6 +509,105 @@
             }
         });
 
+        // Handle mouse events for PC
+        document.addEventListener("mousedown", (event) => {
+            if (event.button === 0) { // Left mouse button
+                touchStartX = event.clientX;
+                touchStartY = event.clientY;
+                touchStartTime = Date.now();
+                touchMoved = false;
+
+                // Check for double click
+                if (doubleTapTimeout) {
+                    clearTimeout(doubleTapTimeout);
+                    doubleTapCount++;
+                } else {
+                    doubleTapCount = 1;
+                }
+
+                doubleTapTimeout = setTimeout(() => {
+                    doubleTapCount = 0;
+                }, 300);
+
+                if (doubleTapCount === 2) {
+                    isMovingForward = true;
+                    controls.movementSpeed = moveSpeed;
+                }
+            }
+        });
+
+        document.addEventListener("mouseup", (event) => {
+            if (event.button === 0) { // Left mouse button
+                touchEndTime = Date.now();
+                touchDuration = touchEndTime - touchStartTime;
+                const deltaX = event.clientX - touchStartX;
+                const deltaY = event.clientY - touchStartY;
+
+                if (touchMoved) {
+                    // Mouse drag detected
+                    if (Math.abs(deltaX) > swipeThreshold) {
+                        // Horizontal drag
+                        if (deltaX > 0) {
+                            // Right drag
+                            controls.object.rotation.y -= Math.PI / 32;
+                        } else {
+                            // Left drag
+                            controls.object.rotation.y += Math.PI / 32;
+                        }
+                    } else if (Math.abs(deltaY) > swipeThreshold) {
+                        // Vertical drag
+                        if (deltaY > 0) {
+                            // Down drag
+                            controls.object.rotation.x += Math.PI / 32;
+                        } else {
+                            // Up drag
+                            controls.object.rotation.x -= Math.PI / 32;
+                        }
+                    }
+                } else {
+                    // Click detected
+                    if (touchDuration < 300 && Math.abs(deltaX) < 5 && Math.abs(deltaY) < 5) {
+                        // Single click
+                        if (doubleTapCount === 1) {
+                            doubleTapCount = 0;
+                        }
+                    }
+                }
+
+                if (isMovingForward && touchDuration < 300) {
+                    // Stop moving forward on mouse up
+                    isMovingForward = false;
+                    controls.movementSpeed = 0;
+                    moveControl = null;
+                }
+            }
+        });
+
+        document.addEventListener("mousemove", (event) => {
+            if (event.buttons === 1) { // Left mouse button is pressed
+                touchMoved = true;
+                const currentX = event.clientX;
+                const currentY = event.clientY;
+                const deltaX = currentX - touchStartX;
+                const deltaY = currentY - touchStartY;
+
+                if (isMovingForward) {
+                    // Adjust movement direction based on drag
+                    controls.movementSpeed = moveSpeed;
+                    moveDirection.set(-deltaX, deltaY, 0).normalize();
+                    controls.object.getWorldDirection(moveDirection);
+                    moveControl = moveDirection;
+                } else {
+                    // Smooth camera rotation
+                    controls.object.rotation.y -= deltaX * 0.01;
+                    controls.object.rotation.x += deltaY * 0.01;
+                }
+
+                touchStartX = currentX;
+                touchStartY = currentY;
+            }
+        });
+
         // Initialize the 3D scene
         function initScene() {
             const scene = new THREE.Scene();

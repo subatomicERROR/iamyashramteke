@@ -375,6 +375,8 @@
         let doubleTapCount = 0;
         let swipeThreshold = 50; // Minimum swipe distance in pixels
         let moveSpeed = 100;
+        let moveDirection = new THREE.Vector3();
+        let moveControl = null;
 
         function toggleMenu() {
             const navLinks = document.querySelector(".nav-links");
@@ -477,6 +479,7 @@
                     // Stop moving forward on touch end
                     isMovingForward = false;
                     controls.movementSpeed = 0;
+                    moveControl = null;
                 }
             }
         });
@@ -492,8 +495,9 @@
                 if (isMovingForward) {
                     // Adjust movement direction based on swipe
                     controls.movementSpeed = moveSpeed;
-                    controls.object.rotation.y -= deltaX * 0.01;
-                    controls.object.rotation.x += deltaY * 0.01;
+                    moveDirection.set(-deltaX, deltaY, 0).normalize();
+                    controls.object.getWorldDirection(moveDirection);
+                    moveControl = moveDirection;
                 } else {
                     // Smooth camera rotation
                     controls.object.rotation.y -= deltaX * 0.01;

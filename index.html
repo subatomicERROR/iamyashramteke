@@ -372,6 +372,11 @@
         let chakraOrbs = [];
         let touchStartX = 0;
         let touchStartY = 0;
+        let touchStartTime = 0;
+        let touchEndTime = 0;
+        let touchDuration = 0;
+        let touchMoved = false;
+        let swipeThreshold = 50; // Minimum swipe distance in pixels
 
         function toggleMenu() {
             const navLinks = document.querySelector(".nav-links");
@@ -408,18 +413,48 @@
             if (event.touches.length === 1) {
                 touchStartX = event.touches[0].clientX;
                 touchStartY = event.touches[0].clientY;
+                touchStartTime = Date.now();
+                touchMoved = false;
                 controls.handleTouchStart(event.touches[0]);
             }
         });
 
         document.addEventListener("touchend", (event) => {
             if (event.changedTouches.length === 1) {
+                touchEndTime = Date.now();
+                touchDuration = touchEndTime - touchStartTime;
+                const touchEndX = event.changedTouches[0].clientX;
+                const touchEndY = event.changedTouches[0].clientY;
+                const deltaX = touchEndX - touchStartX;
+                const deltaY = touchEndY - touchStartY;
+
+                if (touchMoved) {
+                    // Swipe detected
+                    if (Math.abs(deltaX) > swipeThreshold) {
+                        // Horizontal swipe
+                        if (deltaX > 0) {
+                            // Right swipe
+                            controls.object.rotation.y -= Math.PI / 32;
+                        } else {
+                            // Left swipe
+                            controls.object.rotation.y += Math.PI / 32;
+                        }
+                    }
+                } else {
+                    // Tap detected
+                    if (touchDuration < 300 && Math.abs(deltaX) < 5 && Math.abs(deltaY) < 5) {
+                        // Move forward
+                        controls.movementSpeed = 100;
+                    }
+                }
+
                 controls.handleTouchEnd(event.changedTouches[0]);
             }
         });
 
         document.addEventListener("touchmove", (event) => {
             if (event.touches.length === 1) {
+                touchMoved = true;
                 controls.handleTouchMove(event.touches[0]);
             }
         });
@@ -658,28 +693,58 @@
             document
                 .getElementById("spaceCanvas")
                 .addEventListener("touchstart", (event) => {
-                    if (event.touches.length === 1) {
-                        touchStartX = event.touches[0].clientX;
-                        touchStartY = event.touches[0].clientY;
-                        controls.handleTouchStart(event.touches[0]);
-                    }
-                });
+                if (event.touches.length === 1) {
+                    touchStartX = event.touches[0].clientX;
+                    touchStartY = event.touches[0].clientY;
+                    touchStartTime = Date.now();
+                    touchMoved = false;
+                    controls.handleTouchStart(event.touches[0]);
+                }
+            });
 
             document
                 .getElementById("spaceCanvas")
                 .addEventListener("touchend", (event) => {
-                    if (event.changedTouches.length === 1) {
-                        controls.handleTouchEnd(event.changedTouches[0]);
+                if (event.changedTouches.length === 1) {
+                    touchEndTime = Date.now();
+                    touchDuration = touchEndTime - touchStartTime;
+                    const touchEndX = event.changedTouches[0].clientX;
+                    const touchEndY = event.changedTouches[0].clientY;
+                    const deltaX = touchEndX - touchStartX;
+                    const deltaY = touchEndY - touchStartY;
+
+                    if (touchMoved) {
+                        // Swipe detected
+                        if (Math.abs(deltaX) > swipeThreshold) {
+                            // Horizontal swipe
+                            if (deltaX > 0) {
+                                // Right swipe
+                                controls.object.rotation.y -= Math.PI / 32;
+                            } else {
+                                // Left swipe
+                                controls.object.rotation.y += Math.PI / 32;
+                            }
+                        }
+                    } else {
+                        // Tap detected
+                        if (touchDuration < 300 && Math.abs(deltaX) < 5 && Math.abs(deltaY) < 5) {
+                            // Move forward
+                            controls.movementSpeed = 100;
+                        }
                     }
-                });
+
+                    controls.handleTouchEnd(event.changedTouches[0]);
+                }
+            });
 
             document
                 .getElementById("spaceCanvas")
                 .addEventListener("touchmove", (event) => {
-                    if (event.touches.length === 1) {
-                        controls.handleTouchMove(event.touches[0]);
-                    }
-                });
+                if (event.touches.length === 1) {
+                    touchMoved = true;
+                    controls.handleTouchMove(event.touches[0]);
+                }
+            });
 
             return renderer;
         }

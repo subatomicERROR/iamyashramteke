@@ -370,6 +370,8 @@
         let paused = false;
         let originalMovementSpeed;
         let chakraOrbs = [];
+        let touchStartX = 0;
+        let touchStartY = 0;
 
         function toggleMenu() {
             const navLinks = document.querySelector(".nav-links");
@@ -403,18 +405,23 @@
 
         // Handle touch events for mobile
         document.addEventListener("touchstart", (event) => {
-            isClicking = true;
-            speed = 2; // Set speed directly for touch
-            controls.handleTouchStart(event.touches[0]);
+            if (event.touches.length === 1) {
+                touchStartX = event.touches[0].clientX;
+                touchStartY = event.touches[0].clientY;
+                controls.handleTouchStart(event.touches[0]);
+            }
         });
 
-        document.addEventListener("touchend", () => {
-            isClicking = false;
-            speed = 2; // Return to normal speed
+        document.addEventListener("touchend", (event) => {
+            if (event.changedTouches.length === 1) {
+                controls.handleTouchEnd(event.changedTouches[0]);
+            }
         });
 
         document.addEventListener("touchmove", (event) => {
-            controls.handleTouchMove(event.touches[0]);
+            if (event.touches.length === 1) {
+                controls.handleTouchMove(event.touches[0]);
+            }
         });
 
         // Initialize the 3D scene
@@ -651,19 +658,27 @@
             document
                 .getElementById("spaceCanvas")
                 .addEventListener("touchstart", (event) => {
-                    controls.handleTouchStart(event.touches[0]);
-                });
-
-            document
-                .getElementById("spaceCanvas")
-                .addEventListener("touchmove", (event) => {
-                    controls.handleTouchMove(event.touches[0]);
+                    if (event.touches.length === 1) {
+                        touchStartX = event.touches[0].clientX;
+                        touchStartY = event.touches[0].clientY;
+                        controls.handleTouchStart(event.touches[0]);
+                    }
                 });
 
             document
                 .getElementById("spaceCanvas")
                 .addEventListener("touchend", (event) => {
-                    controls.handleTouchEnd(event.touches[0]);
+                    if (event.changedTouches.length === 1) {
+                        controls.handleTouchEnd(event.changedTouches[0]);
+                    }
+                });
+
+            document
+                .getElementById("spaceCanvas")
+                .addEventListener("touchmove", (event) => {
+                    if (event.touches.length === 1) {
+                        controls.handleTouchMove(event.touches[0]);
+                    }
                 });
 
             return renderer;

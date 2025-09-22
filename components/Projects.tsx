@@ -1,4 +1,5 @@
 
+import "../styles/shine.css";
 import React, { useRef, useState, MouseEvent } from 'react';
 import type { Project } from '../types';
 import { PROJECTS } from '../constants';
@@ -66,19 +67,21 @@ const ProjectCard: React.FC<{ project: Project } & NavigationProps> = ({ project
     );
 
     const commonProps = {
-        className: "relative bg-[#101018]/50 backdrop-blur-lg rounded-xl p-6 flex flex-col border border-[#6381A8]/20 transition-all duration-300 hover:border-[#6381A8]/40 hover:-translate-y-1 group overflow-hidden",
+        className: `relative bg-[#101018]/50 backdrop-blur-lg rounded-xl p-6 flex flex-col border border-[#6381A8]/20 transition-all duration-300 hover:border-[#6381A8]/40 hover:-translate-y-1 group overflow-hidden ${project.slug ? 'cursor-pointer' : ''}`,
         onMouseMove: handleMouseMove,
         onMouseLeave: handleMouseLeave,
     };
 
     if (project.slug) {
         return (
-            <a href="#" onClick={(e) => handleProjectClick(e, project.slug!)} {...commonProps}>
-                {cardInnerContent}
-            </a>
+            <div className="mb-4">
+                <a href="#" onClick={(e) => handleProjectClick(e, project.slug!)} {...commonProps}>
+                    {cardInnerContent}
+                </a>
+                <p className="mt-2 text-xs text-[#6381A8] font-medium italic text-center">Click to learn more</p>
+            </div>
         );
     }
-    
     return (
         <div {...commonProps}>
             {cardInnerContent}

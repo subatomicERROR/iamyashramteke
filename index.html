@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>subatomicERROR | Mind Architect</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --background: #050509;
+        --text-primary: #EAECEF;
+        --text-secondary: #A9B3C1;
+        --accent: #6381A8;
+        --accent-dark: #3E526E;
+        --surface: rgba(16, 16, 24, 0.5);
+        --border: rgba(99, 129, 168, 0.2);
+      }
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--background);
+        cursor: none;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-family: 'Space Grotesk', sans-serif;
+      }
+      .aura {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background-color: var(--accent);
+        opacity: 0.3;
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        transition: width 0.3s, height 0.3s, opacity 0.3s, background-color 0.3s;
+        z-index: 9999;
+        filter: blur(8px);
+      }
+      body:hover .aura {
+        opacity: 0.3;
+      }
+    </style>
+
+<link rel="stylesheet" href="/index.css">
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.1.1",
+    "react/": "https://aistudiocdn.com/react@^19.1.1/",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/"
+  }
+}
+</script>
+  <script type="module" crossorigin src="/assets/index-Cz1GMYIv.js"></script>
+</head>
+  <body>
+    <div id="root"></div>
+</body>
+</html>

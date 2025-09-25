@@ -1,20 +1,42 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# subatomicERROR Portfolio
 
-# Run and deploy your AI Studio app
+## Yash Ramteke's Personal Website
 
-This contains everything you need to run your app locally.
+This repository hosts the source code for Yash Ramteke's personal portfolio website, `subatomicERROR`. Designed to showcase projects, explorations, and technical skills, this site provides an interactive and engaging experience for visitors. It features a modern design, dynamic visual elements, and robust mobile optimizations, ensuring a smooth experience across all devices.
 
-View your app in AI Studio: https://ai.studio/apps/drive/1jyX_Fqkg2On1zPcH8gp9O1JDGxePndU5
+---
 
-## Run Locally
+## ✨ Features
 
-**Prerequisites:**  Node.js
+*   **Dynamic Background:** Interactive WebGL fluid simulation for desktop, gracefully degrading to an optimized grid background for touch devices and mobile for enhanced performance and compatibility.
+*   **Custom Cursor:** Engaging custom cursor for desktop interactions, enhancing the unique user experience.
+*   **Responsive Design:** Fully optimized for seamless viewing and interaction across desktops, tablets, and mobile devices.
+*   **Modular Architecture:** Built with React components for maintainability and scalability.
+*   **Project Showcase:** Dedicated sections for key projects (e.g., AgentBash), explorations, and contact information.
+*   **Performance-Focused:** Implements modern bundling and asset optimization via Vite, along with specific mobile performance enhancements like touch-optimized scrolling and efficient menu handling.
+*   **Smooth Scrolling:** CSS enhancements (`-webkit-overflow-scrolling: touch` and `scroll-behavior: smooth`) ensure native-like, fluid scrolling on mobile.
 
+## 🚀 Technologies Used
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+*   **Frontend Framework:** React
+*   **Language:** TypeScript
+*   **Build Tool/Dev Server:** Vite
+*   **Styling:** Tailwind CSS (via CDN)
+*   **Interactive Graphics:** WebGL (for fluid simulation)
+*   **Deployment Automation:** `gh-pages`
+
+## 💡 Getting Started (Local Development)
+
+To set up and run this project locally for development or contributions:
+
+### Prerequisites
+
+Ensure you have the following installed on your system:
+
+*   **Node.js** (LTS version recommended)
+*   **npm** (Node Package Manager, typically installed with Node.js) or Yarn/pnpm
+
+### Installation
+
+1.  **Clone the repository** (if you're starting fresh, otherwise you already have the `my-website` folder):
+    

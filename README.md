@@ -1,5 +1,3 @@
-# subatomicERROR Portfolio
-
 ## Yash Ramteke's Personal Website
 
 This repository hosts the source code for Yash Ramteke's personal portfolio website, `subatomicERROR`. Designed to showcase projects, explorations, and technical skills, this site provides an interactive and engaging experience for visitors. It features a modern design, dynamic visual elements, and robust mobile optimizations, ensuring a smooth experience across all devices.

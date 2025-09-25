@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="scroll-behavior: smooth;">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
@@ -26,6 +26,11 @@
         background-image: radial-gradient(var(--border) 1px, transparent 1px);
         background-size: 30px 30px;
         color: var(--text-secondary);
+        -webkit-overflow-scrolling: touch;
+      }
+      .body-no-scroll {
+        overflow: hidden;
+        overscroll-behavior: none;
       }
       /* Hide cursor only on devices with a mouse/fine pointer */
       @media (pointer: fine) {
@@ -141,7 +146,7 @@
   }
 }
 </script>
-  <script type="module" crossorigin src="/iamyashramteke/assets/index-B6K6HR0e.js"></script>
+  <script type="module" crossorigin src="/iamyashramteke/assets/index-COdKcOmB.js"></script>
 </head>
   <body>
     <div id="root"></div>

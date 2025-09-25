@@ -1,14 +1,25 @@
-import type { Project, SkillCategory } from './types';
-import { PythonIcon, ReactIcon, TypeScriptIcon, NodeIcon, DockerIcon, GitIcon, TailwindIcon, TensorFlowIcon, PyTorchIcon, LangChainIcon, NextJsIcon, FastApiIcon, GCPIcon, VercelIcon } from './components/ui/Icons';
-import { InstagramIcon, BrainCircuitIcon, LineChartIcon } from './components/ui/Icons';
+import type { Project } from './types';
+import { InstagramIcon, AtomIcon, LineChartIcon } from './components/ui/Icons';
 
 
 export const EXPLORATIONS = [
   {
-    title: 'Esoteric Intelligence',
-    description: 'A direct transmission of my thoughts, decoding reality through a quantum spiritual lens. I share my explorations into the interwoven secrets of spirit, mind, and energy. If you seek to be part of this journey, follow my account to tap into the stream.',
+    title: '@esotericintelligence',
+    description: 'A platform dedicated to elevating the mind and healing. Here, I decode the principles of consciousness, energy, and spiritual growth, offering tools and insights to help you reprogram your reality.',
     url: 'https://www.instagram.com/esotericintelligence',
-    icon: BrainCircuitIcon
+    icon: AtomIcon
+  },
+  {
+    title: '@subatomicerror',
+    description: 'The official hub for my work in AI development. Follow for project showcases, technical insights, and explorations into building intelligent, automated systems with cutting-edge AI.',
+    url: 'https://www.instagram.com/subatomicerror',
+    icon: InstagramIcon
+  },
+  {
+    title: '@iamyash.io',
+    description: 'My personal platform where I teach men how to master solitude, build unwavering consistency, and transmute heartbreak into personal power. A direct look into the philosophies that forge resilience.',
+    url: 'https://www.instagram.com/iamyash.io',
+    icon: InstagramIcon
   },
 ];
 
@@ -19,45 +30,7 @@ export const PROJECTS: Project[] = [
     slug: 'agentbash',
     description: "An expert AI development partner that automates entire workflows with a single command. AgentBash uses a multi-agent architecture to generate complete, executable scripts for Windows (PowerShell) and Linux (Bash). Simply provide a high-level goal, approve the AI's intelligent plan, and run the generated script to build full applications, refactor existing code, or automate complex tasks. It's a sophisticated platform that bridges natural language requests and ready-to-run development automation, powered by Gemini Flash.",
     tags: ['Work in Progress'],
-    repoUrl: 'https://github.com/subatomicERROR',
+    repoUrl: 'https://github.com/subatomicERROR/agentbash.io',
     liveUrl: 'https://agentbash.vercel.app/',
   }
-];
-
-export const SKILL_CATEGORIES: SkillCategory[] = [
-  {
-    title: 'AI/ML',
-    skills: [
-      { name: 'Python', icon: PythonIcon },
-      { name: 'TensorFlow', icon: TensorFlowIcon },
-      { name: 'PyTorch', icon: PyTorchIcon },
-      { name: 'LangChain', icon: LangChainIcon },
-    ],
-  },
-  {
-    title: 'Frontend',
-    skills: [
-      { name: 'React', icon: ReactIcon },
-      { name: 'TypeScript', icon: TypeScriptIcon },
-      { name: 'Next.js', icon: NextJsIcon },
-      { name: 'Tailwind CSS', icon: TailwindIcon },
-    ],
-  },
-  {
-    title: 'Backend',
-    skills: [
-      { name: 'Node.js', icon: NodeIcon },
-      { name: 'Python', icon: PythonIcon },
-      { name: 'FastAPI', icon: FastApiIcon },
-    ],
-  },
-  {
-    title: 'Tools & DevOps',
-    skills: [
-      { name: 'Git', icon: GitIcon },
-      { name: 'Docker', icon: DockerIcon },
-      { name: 'GCP', icon: GCPIcon },
-      { name: 'Vercel', icon: VercelIcon },
-    ],
-  },
 ];

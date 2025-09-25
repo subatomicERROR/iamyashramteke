@@ -1,16 +1,14 @@
-
-import "../styles/shine.css";
 import React, { useRef, useState, MouseEvent } from 'react';
 import type { Project } from '../types';
 import { PROJECTS } from '../constants';
-import { GithubIcon } from './ui/Icons';
+import { GithubIcon, ChevronRightIcon } from './ui/Icons';
 import useFadeIn from '../hooks/useFadeIn';
 import { NavigationProps } from '../App';
 
-const ProjectCard: React.FC<{ project: Project } & NavigationProps> = ({ project, navigate }) => {
-    // FIX: Removed useRef and switched to using event.currentTarget in handleMouseMove.
-    // This resolves TypeScript errors caused by applying a generic HTMLElement ref to specific
-    // HTMLAnchorElement and HTMLDivElement elements, which have incompatible ref types.
+const ProjectCard: React.FC<{ project: Project, delay: number } & NavigationProps> = ({ project, navigate, delay }) => {
+    const cardRef = useRef<any>(null);
+    useFadeIn(cardRef, delay);
+
     const [glowStyle, setGlowStyle] = useState({});
 
     const handleMouseMove = (e: MouseEvent<HTMLElement>) => {
@@ -20,7 +18,7 @@ const ProjectCard: React.FC<{ project: Project } & NavigationProps> = ({ project
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
         setGlowStyle({
-            background: `radial-gradient(circle at ${x}px ${y}px, rgba(99, 129, 168, 0.15), transparent 40%)`
+            background: `radial-gradient(circle at ${x}px ${y}px, var(--glow), transparent 40%)`
         });
     };
 
@@ -32,82 +30,98 @@ const ProjectCard: React.FC<{ project: Project } & NavigationProps> = ({ project
         e.preventDefault();
         navigate(`/project/${slug}`);
     };
+    
+    const isClickable = !!project.slug;
 
     const cardInnerContent = (
         <>
             <div className="absolute inset-0 transition-all duration-300" style={glowStyle}></div>
-            <div className="relative z-10 flex flex-col flex-grow h-full">
+            <div className="relative z-10 flex flex-col flex-grow h-full p-6">
                 <div className="flex-grow">
                     <div className="flex justify-between items-start mb-4">
-                        <h3 className="text-xl sm:text-2xl font-bold text-[#EAECEF]">{project.title}</h3>
-                        {!project.slug && (
-                            <div className="flex items-center gap-4 text-[#A9B3C1]">
-                                <a href={project.repoUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[#EAECEF] transition-colors">
-                                    <GithubIcon className="w-5 h-5" />
+                        <h3 className="text-2xl font-bold text-[var(--text-primary)]">{project.title}</h3>
+                        <div className="flex items-center gap-4 text-[var(--text-secondary)]">
+                            <a href={project.repoUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[var(--text-primary)] transition-colors">
+                                <GithubIcon className="w-5 h-5" />
+                            </a>
+                            {project.liveUrl && !isClickable && (
+                                <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[var(--text-primary)] transition-colors text-sm font-medium">
+                                    Live URL
                                 </a>
-                                {project.liveUrl && (
-                                    <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[#EAECEF] transition-colors text-sm font-medium">
-                                        Live URL
-                                    </a>
-                                )}
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </div>
-                    <p className="text-[#A9B3C1] mb-6 text-sm leading-relaxed">{project.description}</p>
+                    <p className="text-[var(--text-secondary)] mb-6 text-sm leading-relaxed">{project.description}</p>
                 </div>
-                <div className="flex flex-wrap gap-2 mt-auto">
-                    {project.tags.map(tag => (
-                        <span key={tag} className="bg-[#6381A8]/10 text-[#6381A8] text-xs font-medium px-3 py-1 rounded-full">
-                            {tag}
-                        </span>
-                    ))}
+                <div className="flex items-end justify-between mt-auto">
+                    <div className="flex flex-wrap gap-2">
+                        {project.tags.map(tag => (
+                            <span key={tag} className="bg-[var(--accent)]/10 text-[var(--accent)] text-xs font-medium px-3 py-1 rounded-full">
+                                {tag}
+                            </span>
+                        ))}
+                    </div>
+                    {isClickable && (
+                        <div className="flex items-center text-sm font-medium text-[var(--accent)] group-hover:text-[var(--text-primary)] transition-colors">
+                            View Case Study
+                            <ChevronRightIcon className="w-5 h-5 ml-1 transform group-hover:translate-x-1 transition-transform" />
+                        </div>
+                    )}
                 </div>
             </div>
         </>
     );
 
     const commonProps = {
-        className: `relative bg-[#101018]/50 backdrop-blur-lg rounded-xl p-6 flex flex-col border border-[#6381A8]/20 transition-all duration-300 hover:border-[#6381A8]/40 hover:-translate-y-1 group overflow-hidden ${project.slug ? 'cursor-pointer' : ''}`,
+        className: `relative bg-gradient-to-br from-[#101018]/50 to-transparent rounded-xl flex flex-col border border-[var(--border)] transition-all duration-300 hover:border-[var(--accent)]/40 hover:-translate-y-1 group overflow-hidden opacity-0 ${isClickable ? 'clickable-card-glow' : ''}`,
         onMouseMove: handleMouseMove,
         onMouseLeave: handleMouseLeave,
     };
 
     if (project.slug) {
         return (
-            <div className="mb-4">
-                <a href="#" onClick={(e) => handleProjectClick(e, project.slug!)} {...commonProps}>
-                    {cardInnerContent}
-                </a>
-                <p className="mt-2 text-xs text-[#6381A8] font-medium italic text-center">Click to learn more</p>
-            </div>
+            <a href="#" ref={cardRef} onClick={(e) => handleProjectClick(e, project.slug!)} {...commonProps}>
+                {cardInnerContent}
+            </a>
         );
     }
+    
     return (
-        <div {...commonProps}>
+        <div ref={cardRef} {...commonProps}>
             {cardInnerContent}
         </div>
     );
 };
 
-const SectionHeader: React.FC<{ title: string; subtitle: string }> = ({ title, subtitle }) => (
-    <div className="mb-12">
-        <p className="text-sm tracking-widest text-[#6381A8] uppercase mb-2">{subtitle}</p>
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#EAECEF]">{title}</h2>
-    </div>
-);
+const SectionHeader: React.FC<{ title: string; subtitle: string }> = ({ title, subtitle }) => {
+    const headerRef = useRef<HTMLDivElement>(null);
+    useFadeIn(headerRef);
+
+    return (
+        <div ref={headerRef} className="mb-16 text-center opacity-0">
+            <p className="text-sm tracking-widest text-[var(--accent)] uppercase font-semibold mb-2">{subtitle}</p>
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold">{title}</h2>
+        </div>
+    );
+};
 
 
 const Projects: React.FC<NavigationProps> = ({ navigate }) => {
-    const sectionRef = useRef<HTMLElement>(null);
-    useFadeIn(sectionRef);
-
     return (
-        <section id="projects" ref={sectionRef} className="py-24 md:py-32 opacity-0">
-            <SectionHeader title="Digital Constructs." subtitle="My Work" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {PROJECTS.map(project => (
-                    <ProjectCard key={project.title} project={project} navigate={navigate} />
-                ))}
+        <section id="constructs" className="py-24 md:py-32">
+            <div className="max-w-5xl mx-auto">
+                <SectionHeader title="Digital Constructs." subtitle="My Work" />
+                {PROJECTS.length === 1 ? (
+                    <div className="max-w-2xl mx-auto">
+                         <ProjectCard project={PROJECTS[0]} navigate={navigate} delay={0} />
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        {PROJECTS.map((project, index) => (
+                            <ProjectCard key={project.title} project={project} navigate={navigate} delay={index * 150} />
+                        ))}
+                    </div>
+                )}
             </div>
         </section>
     );

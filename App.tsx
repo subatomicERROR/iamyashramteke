@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import Background from './components/Background';
 import Header from './components/Header';
@@ -17,6 +16,16 @@ export interface NavigationProps {
 
 const App: React.FC = () => {
   const [route, setRoute] = useState('');
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  useEffect(() => {
+    const checkForTouch = () => {
+      // A reliable way to check for touch devices
+      return ( 'ontouchstart' in window ) ||
+             ( navigator.maxTouchPoints > 0 );
+    };
+    setIsTouchDevice(checkForTouch());
+  }, []);
 
   const navigate = (path: string) => {
     window.scrollTo(0, 0);
@@ -39,20 +48,20 @@ const App: React.FC = () => {
         { rootMargin: '-40% 0px -60% 0px' }
       );
 
-      const sections = ['home', 'about', 'projects', 'explorations', 'contact'];
+      const sections = ['home', 'principle', 'constructs', 'explorations', 'contact'];
+      const observedElements: HTMLElement[] = [];
       sections.forEach((id) => {
         const element = document.getElementById(id);
         if (element) {
           sectionsRef.current[id] = element;
           observer.observe(element);
+          observedElements.push(element);
         }
       });
 
       return () => {
-        Object.values(sectionsRef.current).forEach((element) => {
-          if (element) {
-            observer.unobserve(element);
-          }
+        observedElements.forEach((element) => {
+          observer.unobserve(element);
         });
       };
     }, []);
@@ -80,8 +89,8 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="bg-[#050509] text-[#A9B3C1] min-h-screen overflow-x-hidden antialiased">
-      <Cursor />
+    <div className="bg-transparent text-[#A9B3C1] min-h-screen overflow-x-hidden antialiased">
+      {!isTouchDevice && <Cursor />}
       <Background />
       {renderContent()}
     </div>

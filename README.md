@@ -1,18 +1,20 @@
-# subatomicERROR Portfolio
+<div align="center">
+<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+</div>
 
-Welcome to the personal website and portfolio of Yash R (subatomicERROR).
+# Run and deploy your AI Studio app
 
-## About
+This contains everything you need to run your app locally.
 
-This site is a digital sanctuary for self-improvement, healing, and consciousness elevation. It showcases my projects, skills, and explorations at the intersection of technology and spirituality.
+View your app in AI Studio: https://ai.studio/apps/drive/1jyX_Fqkg2On1zPcH8gp9O1JDGxePndU5
 
-## Features
-- Modern React + Vite codebase
-- Fully responsive and mobile-friendly
-- Custom animations and UI
-- Project and skills showcase
-- Contact and social links
+## Run Locally
 
-## License
+**Prerequisites:**  Node.js
 
-MIT
+
+1. Install dependencies:
+   `npm install`
+2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+3. Run the app:
+   `npm run dev`

@@ -4,28 +4,38 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>subatomicERROR | Mind Architect</title>
+    <title>@iamyash.io</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
       :root {
-        --background: #050509;
-        --text-primary: #EAECEF;
-        --text-secondary: #A9B3C1;
-        --accent: #6381A8;
-        --accent-dark: #3E526E;
-        --surface: rgba(16, 16, 24, 0.5);
-        --border: rgba(99, 129, 168, 0.2);
+        --background: #0A0A0F;
+        --text-primary: #F0F2F5;
+        --text-secondary: #9DA3AE;
+        --accent: #3874E8;
+        --accent-dark: #2A5AB8;
+        --surface: rgba(22, 24, 29, 0.5);
+        --border: rgba(56, 116, 232, 0.1);
+        --glow: rgba(56, 116, 232, 0.15);
       }
       body {
         font-family: 'Inter', sans-serif;
         background-color: var(--background);
-        cursor: none;
+        background-image: radial-gradient(var(--border) 1px, transparent 1px);
+        background-size: 30px 30px;
+        color: var(--text-secondary);
+      }
+      /* Hide cursor only on devices with a mouse/fine pointer */
+      @media (pointer: fine) {
+        body {
+          cursor: none;
+        }
       }
       h1, h2, h3, h4, h5, h6 {
         font-family: 'Space Grotesk', sans-serif;
+        color: var(--text-primary);
       }
       .aura {
         position: fixed;
@@ -42,8 +52,78 @@
         z-index: 9999;
         filter: blur(8px);
       }
-      body:hover .aura {
-        opacity: 0.3;
+      @keyframes border-glow {
+        0%, 100% {
+          border-color: var(--border);
+          box-shadow: 0 0 5px var(--glow), inset 0 0 5px var(--glow);
+        }
+        50% {
+          border-color: rgba(56, 116, 232, 0.5);
+          box-shadow: 0 0 15px var(--glow), inset 0 0 15px var(--glow);
+        }
+      }
+      .clickable-card-glow {
+        animation: border-glow 2.5s infinite ease-in-out;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .animate-fade-in {
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+      .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+      }
+      .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      
+      /* --- Icon Animations --- */
+      @keyframes icon-pulse-glow {
+        0%, 100% {
+          filter: drop-shadow(0 0 1px var(--accent));
+          transform: scale(1);
+        }
+        50% {
+          filter: drop-shadow(0 0 4px var(--accent));
+          transform: scale(1.1);
+        }
+      }
+      .animate-brain-pulse .brain-center,
+      .animate-atom .atom-nucleus {
+        animation: icon-pulse-glow 2.5s infinite ease-in-out;
+        transform-origin: center;
+      }
+
+      @keyframes layer-top-anim {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-1.5px); }
+      }
+      @keyframes layer-bottom-anim {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(1.5px); }
+      }
+      .animate-layers .layer-top {
+        animation: layer-top-anim 3s infinite cubic-bezier(0.45, 0, 0.55, 1);
+      }
+      .animate-layers .layer-bottom {
+        animation: layer-bottom-anim 3s infinite cubic-bezier(0.45, 0, 0.55, 1);
+      }
+      
+      @keyframes cpu-core-glow {
+        0%, 100% {
+            stroke: var(--accent);
+            stroke-width: 1.5;
+        }
+        50% {
+            stroke: var(--text-primary);
+            stroke-width: 2;
+        }
+      }
+      .animate-cpu .cpu-core {
+        animation: cpu-core-glow 2s infinite ease-in-out;
       }
     </style>
   <script type="importmap">

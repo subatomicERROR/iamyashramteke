@@ -8,13 +8,3 @@ export interface Project {
   repoUrl: string;
   slug?: string;
 }
-
-export interface SkillCategory {
-  title: string;
-  skills: Skill[];
-}
-
-export interface Skill {
-  name: string;
-  icon: React.ComponentType<{ className?: string }>;
-}

@@ -24,19 +24,3 @@ This repository hosts the source code for Yash Ramteke's personal portfolio webs
 *   **Styling:** Tailwind CSS (via CDN)
 *   **Interactive Graphics:** WebGL (for fluid simulation)
 *   **Deployment Automation:** `gh-pages`
-
-## 💡 Getting Started (Local Development)
-
-To set up and run this project locally for development or contributions:
-
-### Prerequisites
-
-Ensure you have the following installed on your system:
-
-*   **Node.js** (LTS version recommended)
-*   **npm** (Node Package Manager, typically installed with Node.js) or Yarn/pnpm
-
-### Installation
-
-1.  **Clone the repository** (if you're starting fresh, otherwise you already have the `my-website` folder):
-    

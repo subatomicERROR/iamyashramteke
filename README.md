@@ -23,5 +23,5 @@ This repository hosts the source code for Yash Ramteke's personal portfolio webs
 *   **Interactive Graphics:** WebGL (for fluid simulation)
 *   **Deployment Automation:** `gh-pages`
 
-## subatomicERROR/iamyashramteke is licensed under the
+subatomicERROR/iamyashramteke is licensed under the
 MIT License

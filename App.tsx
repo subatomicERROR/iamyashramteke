@@ -91,7 +91,7 @@ const App: React.FC = () => {
   return (
     <div className="bg-transparent text-[#A9B3C1] min-h-screen overflow-x-hidden antialiased">
       {!isTouchDevice && <Cursor />}
-      <Background />
+      {!isTouchDevice && <Background />}
       {renderContent()}
     </div>
   );

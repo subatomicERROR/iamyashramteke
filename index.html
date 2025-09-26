@@ -130,6 +130,63 @@
       .animate-cpu .cpu-core {
         animation: cpu-core-glow 2s infinite ease-in-out;
       }
+
+      /* --- Preloader Styles --- */
+      #preloader {
+        position: fixed;
+        inset: 0;
+        z-index: 10000;
+        background-color: var(--background);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: opacity 0.5s ease-out;
+        opacity: 1;
+      }
+      .triangle-loader {
+        width: 5rem;
+        height: 5rem;
+        animation: pulse-loader 2.5s infinite ease-in-out;
+      }
+      .triangle-loader .triangle-path {
+        stroke: var(--text-primary);
+        stroke-width: 7;
+        fill: none;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-dasharray: 210;
+        stroke-dashoffset: 210;
+        animation: draw-triangle 2.5s infinite ease-in-out;
+      }
+      @keyframes draw-triangle {
+        30%, 70% {
+          stroke-dashoffset: 0;
+        }
+        100% {
+          stroke-dashoffset: 210;
+        }
+      }
+      @keyframes pulse-loader {
+        0%, 100% {
+          transform: scale(1);
+          filter: drop-shadow(0 0 5px var(--glow));
+        }
+        50% {
+          transform: scale(1.1);
+          filter: drop-shadow(0 0 15px var(--glow));
+        }
+      }
+      #preloader.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+      #root {
+        opacity: 0;
+        transition: opacity 0.6s ease-in;
+      }
+      #root.loaded {
+        opacity: 1;
+      }
     </style>
 
 <link rel="stylesheet" href="/index.css">
@@ -146,9 +203,16 @@
   }
 }
 </script>
-  <script type="module" crossorigin src="/iamyashramteke/assets/index-COdKcOmB.js"></script>
+  <script type="module" crossorigin src="/iamyashramteke/assets/index-B3TQGenM.js"></script>
 </head>
   <body>
+    <div id="preloader">
+      <div class="triangle-loader">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Loading animation">
+          <path class="triangle-path" d="M 50,15 L 85,75 L 15,75 Z" />
+        </svg>
+      </div>
+    </div>
     <div id="root"></div>
 </body>
 </html>

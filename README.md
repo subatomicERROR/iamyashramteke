@@ -5,7 +5,7 @@ IMPORTANT: After running this script, you need to:
 1.  Take a screenshot of your website.
 2.  Save it as 'screenshot.png' (or a similar name) inside the 'docs/' directory.
 3.  If you use a different filename or path, update the 'src' attribute below.
-Example: ![Website Screenshot](./docs/my-awesome-site.jpg)
+Example: ![Website Screenshot](./docs/screenshot.png)
 -->
 ![Website Screenshot](./docs/screenshot.png)
 
@@ -43,7 +43,7 @@ To get a local copy up and running, follow these simple steps.
     ```
 2.  Navigate into the project directory:
     ```bash
-    cd iamyashramteke # This extracts the repo name from the URL
+    cd $(basename https://github.com/subatomicERROR/iamyashramteke .git) # This extracts the repo name from the URL
     ```
 
 ### Install Dependencies

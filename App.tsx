@@ -26,6 +26,29 @@ const App: React.FC = () => {
     };
     setIsTouchDevice(checkForTouch());
   }, []);
+  
+  useEffect(() => {
+    const preloader = document.getElementById('preloader');
+    const root = document.getElementById('root');
+
+    if (preloader && root) {
+      // A small delay to ensure the app has had a moment to render,
+      // preventing a jarring flash if it loads too quickly.
+      setTimeout(() => {
+          root.classList.add('loaded');
+          preloader.classList.add('hidden');
+          preloader.addEventListener('transitionend', () => {
+              try {
+                if (preloader.parentNode) {
+                  preloader.parentNode.removeChild(preloader);
+                }
+              } catch (e) {
+                console.error("Error removing preloader:", e);
+              }
+          }, { once: true });
+      }, 200);
+    }
+  }, []);
 
   const navigate = (path: string) => {
     window.scrollTo(0, 0);

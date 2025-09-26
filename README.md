@@ -1,10 +1,10 @@
-# My Personal Portfolio Website
+# Yash Ramteke's Portfolio Website
 
 <!--
-IMPORTANT: After running this script, you need to:
-1.  Take a screenshot of your website.
+IMPORTANT: After running this script and before your first 'git add/commit' if you haven't already:
+1.  Take a high-quality screenshot of your website.
 2.  Save it as 'screenshot.png' (or a similar name) inside the 'docs/' directory.
-3.  If you use a different filename or path, update the 'src' attribute below.
+3.  If you use a different filename or path, update the 'src' attribute in the markdown below.
 Example: ![Website Screenshot](./docs/screenshot.png)
 -->
 ![Website Screenshot](./docs/screenshot.png)
@@ -90,6 +90,6 @@ Contributions are what make the open source community such an amazing place to l
 Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
-Yash Ramteke - [@YashRamtekeDev](https://twitter.com/YashRamtekeDev) - <your-email@example.com>
+Yash Ramteke - [@YashRamtekeDev](https://twitter.com/YashRamtekeDev) - <iamyashramteke@example.com>
 
 Project Link: [https://github.com/subatomicERROR/iamyashramteke](https://github.com/subatomicERROR/iamyashramteke)

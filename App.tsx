@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Background from './components/Background';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -96,7 +95,7 @@ const App: React.FC = () => {
           <Hero />
           <About />
           <Projects navigate={navigate} />
-          <Explorations />
+          <Explorations navigate={navigate} />
           <Contact />
         </main>
         <Footer />
@@ -114,7 +113,6 @@ const App: React.FC = () => {
   return (
     <div className="bg-transparent text-[#A9B3C1] min-h-screen overflow-x-hidden antialiased">
       {!isTouchDevice && <Cursor />}
-      {!isTouchDevice && <Background />}
       {renderContent()}
     </div>
   );

@@ -25,7 +25,7 @@ const Contact: React.FC = () => {
         return 4;
     };
 
-    const instagramLinks = EXPLORATIONS.filter(item => item.url.includes('instagram.com'))
+    const instagramLinks = EXPLORATIONS.filter(item => item.url && item.url.includes('instagram.com'))
         .sort((a, b) => getOrderScore(a.title) - getOrderScore(b.title));
 
     return (
@@ -37,9 +37,10 @@ const Contact: React.FC = () => {
                 </p>
                 <a
                     href={`mailto:${email}`}
-                    className="inline-block px-10 py-4 bg-[var(--accent)] text-white font-semibold rounded-lg shadow-[0_4px_14px_rgba(56,116,232,0.3)] hover:shadow-[0_6px_20px_rgba(56,116,232,0.4)] transition-all duration-300 transform hover:-translate-y-1"
+                    className="group relative inline-flex items-center justify-center px-10 py-4 bg-black text-[var(--accent)] font-semibold rounded-lg shadow-[0_4px_14px_var(--shadow-color)] hover:shadow-[0_6px_20px_var(--shadow-color-hover)] transition-all duration-300 transform hover:-translate-y-1 overflow-hidden"
                 >
-                    iamyash.creator@gmail.com
+                    <span className="absolute inset-0 bg-[var(--accent)]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform scale-0 group-hover:scale-100 rounded-full"></span>
+                    <span className="relative">iamyash.creator@gmail.com</span>
                 </a>
 
                 <div className="mt-16 flex justify-center gap-6">

@@ -28,7 +28,7 @@ const TypingEffect: React.FC<{ titles: string[] }> = ({ titles }) => {
     return (
         <span className="tracking-wide text-[var(--text-primary)]">
             {`${titles[index].substring(0, subIndex)}`}
-            <span className="opacity-50 animate-pulse">|</span>
+            <span className="opacity-50 animate-pulse font-bold">|</span>
         </span>
     );
 };
@@ -36,32 +36,64 @@ const TypingEffect: React.FC<{ titles: string[] }> = ({ titles }) => {
 const Hero: React.FC = () => {
     const titles = ["AI-Developer", "Mind Architect", "Quantum Thinker", "Digital Healer", "Commercial-Artist", "Lucid-Dreamer", "Polymathical Mind"];
     
-    const scrollToContact = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const scrollTo = (e: React.MouseEvent<HTMLAnchorElement>, selector: string) => {
         e.preventDefault();
-        document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+        document.querySelector(selector)?.scrollIntoView({ behavior: 'smooth' });
     };
 
     return (
-        <section id="home" className="relative min-h-screen flex flex-col justify-center items-start pt-20 overflow-hidden">
+        <section id="home" className="relative min-h-screen flex items-center text-left pt-20">
             <HeroBackground />
-            <div className="relative z-10 max-w-4xl">
-                <p className="text-lg text-[var(--accent)] mb-4 tracking-widest font-medium">YASH R. (subatomicERROR)</p>
-                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-[var(--text-primary)] mb-6">
-                   Transcending Code, Elevating Consciousness.
-                </h1>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl text-[var(--text-secondary)] font-light h-10 sm:h-12 md:h-14">
-                    <TypingEffect titles={titles} />
-                </h2>
-                <p className="mt-8 max-w-2xl text-[var(--text-secondary)] text-base sm:text-lg">
-                   I craft digital tools for healing and share philosophies to elevate consciousness. Through my personal brand, I also guide men on how to master solitude, build unwavering consistency, and transmute heartbreak into strength.
-                </p>
-                <div className="mt-12 flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-8">
-                    <button 
-                        onClick={scrollToContact} 
-                        className="px-8 py-4 bg-[var(--accent)] text-white font-semibold rounded-lg shadow-[0_4px_14px_rgba(56,116,232,0.3)] hover:shadow-[0_6px_20px_rgba(56,116,232,0.4)] transition-all duration-300 transform hover:-translate-y-1"
+            <div className="relative z-10 w-full max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-12">
+                
+                {/* Left Side: Text Content */}
+                <div className="md:max-w-3xl">
+                    <p className="text-sm md:text-base text-[var(--accent)] mb-4 tracking-wider uppercase font-medium animate-fade-in" style={{ animationDelay: '100ms' }}>
+                        YASH R. (subatomicERROR)
+                    </p>
+                    <h1 
+                        className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-[var(--text-primary)] mb-6 gradient-text animate-fade-in"
+                        style={{ animationDelay: '200ms' }}
                     >
-                        Initiate Contact
-                    </button>
+                       Transcending Code, Elevating Consciousness.
+                    </h1>
+                    <h2 
+                        className="text-2xl sm:text-3xl md:text-4xl text-[var(--text-secondary)] font-light h-10 sm:h-12 md:h-14 mb-8 animate-fade-in"
+                        style={{ animationDelay: '300ms' }}
+                    >
+                        <TypingEffect titles={titles} />
+                    </h2>
+                    <p 
+                        className="mt-4 text-[var(--text-secondary)] text-base sm:text-lg leading-relaxed animate-fade-in"
+                        style={{ animationDelay: '400ms' }}
+                    >
+                        I craft digital tools for healing and share philosophies to elevate consciousness. Through my personal brand, I also guide men on how to master solitude, build unwavering consistency, and transmute heartbreak into strength.
+                    </p>
+                </div>
+                
+                {/* Right Side: Buttons */}
+                <div 
+                    className="flex flex-col items-stretch md:items-end gap-6 w-full md:w-auto animate-fade-in"
+                    style={{ animationDelay: '500ms' }}
+                >
+                    <a 
+                        href="#contact"
+                        onClick={(e) => scrollTo(e, '#contact')} 
+                        className="group relative inline-flex items-center justify-center px-8 py-3 bg-black text-[var(--accent)] font-semibold rounded-lg shadow-[0_4px_14px_var(--shadow-color)] hover:shadow-[0_6px_20px_var(--shadow-color-hover)] transition-all duration-300 transform hover:-translate-y-1 overflow-hidden"
+                    >
+                        <span className="absolute inset-0 bg-[var(--accent)]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform scale-0 group-hover:scale-100 rounded-full"></span>
+                        <span className="relative">Get In Touch</span>
+                    </a>
+                     <a 
+                        href="#constructs"
+                        onClick={(e) => scrollTo(e, '#constructs')}
+                        className="group relative inline-flex items-center justify-center px-8 py-3 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-300"
+                    >
+                        Explore Constructs
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                    </a>
                 </div>
             </div>
         </section>

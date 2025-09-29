@@ -26,9 +26,13 @@ const ProjectCard: React.FC<{ project: Project, delay: number } & NavigationProp
         setGlowStyle({});
     };
 
-    const handleProjectClick = (e: MouseEvent<HTMLAnchorElement>, slug: string) => {
-        e.preventDefault();
-        navigate(`/project/${slug}`);
+
+    // FIX: Changed the event type to MouseEvent<HTMLElement> to make it compatible with both 'a' and 'div' elements.
+    const handleProjectClick = (e: MouseEvent<HTMLElement>, slug?: string) => {
+        if (slug) {
+            e.preventDefault();
+            navigate(`/project/${slug}`);
+        }
     };
     
     const isClickable = !!project.slug;
@@ -73,23 +77,23 @@ const ProjectCard: React.FC<{ project: Project, delay: number } & NavigationProp
     );
 
     const commonProps = {
-        className: `relative bg-gradient-to-br from-[#101018]/50 to-transparent rounded-xl flex flex-col border border-[var(--border)] transition-all duration-300 hover:border-[var(--accent)]/40 hover:-translate-y-1 group overflow-hidden opacity-0 ${isClickable ? 'clickable-card-glow' : ''}`,
+        className: `relative bg-gradient-to-br from-[var(--surface)] to-transparent rounded-xl flex flex-col border border-[var(--border)] transition-all duration-300 ease-out hover:border-[var(--accent)]/70 hover:-translate-y-2 hover:shadow-[0_0_25px_var(--glow)] group overflow-hidden ${isClickable ? 'clickable-card-glow' : ''}`,
         onMouseMove: handleMouseMove,
         onMouseLeave: handleMouseLeave,
     };
-
-    if (project.slug) {
-        return (
-            <a href="#" ref={cardRef} onClick={(e) => handleProjectClick(e, project.slug!)} {...commonProps}>
-                {cardInnerContent}
-            </a>
-        );
-    }
+    
+    const Tag = isClickable ? 'a' : 'div';
     
     return (
-        <div ref={cardRef} {...commonProps}>
+        <Tag
+            href={isClickable ? "#" : undefined}
+            ref={cardRef}
+            // FIX: Removed explicit type annotation to allow TypeScript to infer the correct event type, resolving the mismatch.
+            onClick={(e) => handleProjectClick(e, project.slug)}
+            {...commonProps}
+        >
             {cardInnerContent}
-        </div>
+        </Tag>
     );
 };
 
@@ -98,7 +102,7 @@ const SectionHeader: React.FC<{ title: string; subtitle: string }> = ({ title, s
     useFadeIn(headerRef);
 
     return (
-        <div ref={headerRef} className="mb-16 text-center opacity-0">
+        <div ref={headerRef} className="mb-16 text-center">
             <p className="text-sm tracking-widest text-[var(--accent)] uppercase font-semibold mb-2">{subtitle}</p>
             <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold">{title}</h2>
         </div>

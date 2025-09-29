@@ -1,168 +1,85 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 const HeroBackground: React.FC = () => {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const particlesRef = useRef<HTMLDivElement>(null);
+    const shapesRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-
-        let animationFrameId: number;
-        let particles: Particle[] = [];
-        const mouse = { x: -1000, y: -1000, radius: 150 };
-
-        const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+        const particlesContainer = particlesRef.current;
+        const shapesContainer = shapesRef.current;
         
-        // Utility to parse hex and return RGB
-        const hexToRgb = (hex: string) => {
-            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-            return result ? {
-                r: parseInt(result[1], 16),
-                g: parseInt(result[2], 16),
-                b: parseInt(result[3], 16)
-            } : null;
-        };
-        const color = hexToRgb(accentColor) || { r: 56, g: 116, b: 232 };
-
-
-        const setupCanvas = () => {
-            const dpr = window.devicePixelRatio || 1;
-            canvas.width = window.innerWidth * dpr;
-            canvas.height = window.innerHeight * dpr;
-            canvas.style.width = `${window.innerWidth}px`;
-            canvas.style.height = `${window.innerHeight}px`;
-            ctx.scale(dpr, dpr);
-        };
-
-        class Particle {
-            x: number;
-            y: number;
-            radius: number;
-            vx: number;
-            vy: number;
-            baseColor: string;
+        if (particlesContainer) {
+            // Prevent duplicating particles on hot reloads
+            while (particlesContainer.firstChild) {
+                particlesContainer.removeChild(particlesContainer.firstChild);
+            }
             
-            constructor(x: number, y: number, radius: number) {
-                this.x = x;
-                this.y = y;
-                this.radius = radius;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.baseColor = `rgba(${color.r}, ${color.g}, ${color.b}, ${Math.random() * 0.5 + 0.2})`;
-            }
+            const particleCount = 50;
+            const particleFragment = document.createDocumentFragment();
 
-            draw() {
-                if (!ctx) return;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = this.baseColor;
-                ctx.fill();
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const left = Math.random() * 100;
+                const duration = 15 + Math.random() * 15;
+                const delay = Math.random() * 20;
+                
+                particle.style.left = `${left}vw`;
+                particle.style.animationDuration = `${duration}s`;
+                particle.style.animationDelay = `-${delay}s`;
+                
+                particleFragment.appendChild(particle);
             }
-
-            update() {
-                // Mouse interaction
-                const dx = this.x - mouse.x;
-                const dy = this.y - mouse.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                if (distance < mouse.radius) {
-                    const forceDirectionX = dx / distance;
-                    const forceDirectionY = dy / distance;
-                    const force = (mouse.radius - distance) / mouse.radius;
-                    const directionX = forceDirectionX * force * 0.5;
-                    const directionY = forceDirectionY * force * 0.5;
-                    this.x += directionX;
-                    this.y += directionY;
-                } else {
-                    this.x += this.vx;
-                    this.y += this.vy;
-                }
-
-                // Wall collision
-                if (this.x < 0 || this.x > canvas.width / (window.devicePixelRatio || 1)) this.vx *= -1;
-                if (this.y < 0 || this.y > canvas.height / (window.devicePixelRatio || 1)) this.vy *= -1;
-            }
+            particlesContainer.appendChild(particleFragment);
         }
-        
-        const init = () => {
-            particles = [];
-            const numberOfParticles = Math.floor(window.innerWidth / 15);
-            for (let i = 0; i < numberOfParticles; i++) {
-                const radius = Math.random() * 1.5 + 0.5;
-                const x = Math.random() * window.innerWidth;
-                const y = Math.random() * window.innerHeight;
-                particles.push(new Particle(x, y, radius));
+
+        if (shapesContainer) {
+            while (shapesContainer.firstChild) {
+                shapesContainer.removeChild(shapesContainer.firstChild);
             }
-        };
 
-        const connect = () => {
-            let opacityValue = 1;
-            for (let a = 0; a < particles.length; a++) {
-                for (let b = a; b < particles.length; b++) {
-                    const dx = particles[a].x - particles[b].x;
-                    const dy = particles[a].y - particles[b].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
+            const shapeCount = 7; // Increased from 5
+            const shapeFragment = document.createDocumentFragment();
 
-                    if (distance < 100) {
-                        opacityValue = 1 - (distance / 100);
-                        ctx.strokeStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${opacityValue * 0.3})`;
-                        ctx.lineWidth = 1;
-                        ctx.beginPath();
-                        ctx.moveTo(particles[a].x, particles[a].y);
-                        ctx.lineTo(particles[b].x, particles[b].y);
-                        ctx.stroke();
-                    }
-                }
+            for (let i = 0; i < shapeCount; i++) {
+                const shape = document.createElement('div');
+                shape.className = 'shape';
+
+                const left = Math.random() * 100;
+                const size = 40 + Math.random() * 110; // e.g., 40px to 150px
+                const duration = 25 + Math.random() * 20; // e.g., 25s to 45s
+                const delay = Math.random() * 35;
+
+                shape.style.left = `${left}vw`;
+                shape.style.width = `${size}px`;
+                shape.style.height = `${size}px`;
+                shape.style.animationDuration = `${duration}s`;
+                shape.style.animationDelay = `-${delay}s`;
+
+                shapeFragment.appendChild(shape);
             }
-        };
-
-        const animate = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-            connect();
-            animationFrameId = requestAnimationFrame(animate);
-        };
-        
-        const handleMouseMove = (event: MouseEvent) => {
-            mouse.x = event.clientX;
-            mouse.y = event.clientY;
-        };
-
-        const handleResize = () => {
-            cancelAnimationFrame(animationFrameId);
-            setupCanvas();
-            init();
-            animate();
-        };
-
-        setupCanvas();
-        init();
-        animate();
-
-        window.addEventListener('mousemove', handleMouseMove);
-        window.addEventListener('resize', handleResize);
-        
-        return () => {
-            cancelAnimationFrame(animationFrameId);
-            window.removeEventListener('mousemove', handleMouseMove);
-            window.removeEventListener('resize', handleResize);
-        };
+            shapesContainer.appendChild(shapeFragment);
+        }
 
     }, []);
 
     return (
-      <canvas 
-        ref={canvasRef} 
-        className="absolute top-0 left-0 w-full h-full z-0" 
-        style={{
-          maskImage: 'radial-gradient(ellipse at center, black 60%, transparent 100%)',
-          WebkitMaskImage: 'radial-gradient(ellipse at center, black 60%, transparent 100%)'
-        }}
-      />
+        <div className="hero-live-bg absolute top-0 left-1/2 -translate-x-1/2 w-screen h-full z-0">
+            <div className="floating-shapes" ref={shapesRef}>
+                {/* Shapes are now generated dynamically */}
+            </div>
+            
+            <div className="geometric-lines">
+                <div className="line line-1"></div>
+                <div className="line line-2"></div>
+                <div className="line line-3"></div>
+                <div className="line line-4"></div>
+                <div className="line line-5"></div>
+            </div>
+            
+            <div className="particles" ref={particlesRef}></div>
+        </div>
     );
 };
 

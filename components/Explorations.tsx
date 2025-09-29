@@ -1,13 +1,16 @@
 import React, { useRef } from 'react';
 import { EXPLORATIONS } from '../constants';
 import useFadeIn from '../hooks/useFadeIn';
-import type { Exploration } from '../types';
-import type { NavigationProps } from '../App';
 
 type ExplorationCardProps = {
-    item: Exploration;
+    item: {
+        title: string;
+        description: string;
+        url: string;
+        icon: React.ComponentType<{ className?: string }>;
+    };
     delay: number;
-} & NavigationProps;
+};
 
 const SectionHeader: React.FC<{ title: string; subtitle: string }> = ({ title, subtitle }) => {
     const headerRef = useRef<HTMLDivElement>(null);
@@ -21,23 +24,15 @@ const SectionHeader: React.FC<{ title: string; subtitle: string }> = ({ title, s
     );
 };
 
-const ExplorationCard: React.FC<ExplorationCardProps> = ({ item, delay, navigate }) => {
+const ExplorationCard: React.FC<ExplorationCardProps> = ({ item, delay }) => {
     const cardRef = useRef<HTMLAnchorElement>(null);
     useFadeIn(cardRef, delay);
-
-    const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        if (item.slug) {
-            e.preventDefault();
-            navigate(`/exploration/${item.slug}`);
-        }
-    };
 
     return (
         <a 
             ref={cardRef}
-            href={item.url || '#'} 
-            onClick={handleClick}
-            target={item.url ? "_blank" : "_self"}
+            href={item.url} 
+            target="_blank" 
             rel="noopener noreferrer"
             className="block bg-gradient-to-br from-[var(--surface)] to-transparent rounded-xl p-6 border border-[var(--border)] transition-all duration-300 hover:border-[var(--accent)]/40 hover:-translate-y-1 group opacity-0"
         >
@@ -54,7 +49,7 @@ const ExplorationCard: React.FC<ExplorationCardProps> = ({ item, delay, navigate
     );
 };
 
-const Explorations: React.FC<NavigationProps> = ({ navigate }) => {
+const Explorations: React.FC = () => {
     const gridContainerClass = EXPLORATIONS.length > 1
         ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         : "max-w-3xl mx-auto";
@@ -64,7 +59,7 @@ const Explorations: React.FC<NavigationProps> = ({ navigate }) => {
             <SectionHeader title="Further Explorations." subtitle="Beyond the Code" />
             <div className={gridContainerClass}>
                 {EXPLORATIONS.map((item, index) => (
-                    <ExplorationCard key={item.title} item={item} delay={index * 150} navigate={navigate} />
+                    <ExplorationCard key={item.title} item={item} delay={index * 150} />
                 ))}
             </div>
         </section>

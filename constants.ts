@@ -1,8 +1,8 @@
-import type { Project, Exploration } from './types';
-import { InstagramIcon, AtomIcon, BrainCircuitIcon } from './components/ui/Icons';
+import type { Project } from './types';
+import { InstagramIcon, AtomIcon, LineChartIcon } from './components/ui/Icons';
 
 
-export const EXPLORATIONS: Exploration[] = [
+export const EXPLORATIONS = [
   {
     title: '@esotericintelligence',
     description: 'A platform dedicated to elevating the mind and healing. Here, I decode the principles of consciousness, energy, and spiritual growth, offering tools and insights to help you reprogram your reality.',
@@ -28,7 +28,7 @@ export const PROJECTS: Project[] = [
   {
     title: 'AgentBash',
     slug: 'agentbash',
-    description: "An expert AI development partner that automates entire workflows with a single command. AgentBash uses a multi-agent architecture to generate complete, executable scripts for Windows (PowerShell) and Linux (Bash). Simply provide a high-level goal, approve the AI's intelligent plan, and run the generated script to build full applications, refactor existing code, or automate complex tasks. It's a sophisticated platform that bridges natural language requests and ready-to-run development automation.",
+    description: "An expert AI development partner that automates entire workflows with a single command. AgentBash uses a multi-agent architecture to generate complete, executable scripts for Windows (PowerShell) and Linux (Bash). Simply provide a high-level goal, approve the AI's intelligent plan, and run the generated script to build full applications, refactor existing code, or automate complex tasks. It's a sophisticated platform that bridges natural language requests and ready-to-run development automation, powered by Gemini Flash.",
     tags: ['Work in Progress'],
     repoUrl: 'https://github.com/subatomicERROR/agentbash.io',
     liveUrl: 'https://agentbash.vercel.app/',

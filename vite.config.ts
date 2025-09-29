@@ -8,6 +8,10 @@ export default defineConfig(({ mode }) => {
     return {
       base: '/iamyashramteke/',
       plugins: [react()],
+      define: {
+        'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
+        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
+      },
       resolve: {
         alias: {
           // FIX: __dirname is not available in ES modules. The import.meta.url pattern is the modern replacement.

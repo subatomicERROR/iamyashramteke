@@ -95,7 +95,7 @@ const App: React.FC = () => {
           <Hero />
           <About />
           <Projects navigate={navigate} />
-          <Explorations navigate={navigate} />
+          <Explorations />
           <Contact />
         </main>
         <Footer />

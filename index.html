@@ -1,32 +1,77 @@
 <!DOCTYPE html>
-<html lang="en" style="scroll-behavior: smooth;">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A digital sanctuary for Yash R (subatomicERROR), a developer focused on self-improvement, healing, and consciousness elevation. This portfolio showcases digital tools and explorations designed to help break the matrix and elevate the mind." />
     <title>@iamyash.io</title>
+    <script>
+      (function() {
+        function getInitialTheme() {
+          try {
+            const storedTheme = window.localStorage.getItem('theme');
+            if (storedTheme) return storedTheme;
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          } catch (e) {
+            return 'dark'; // Default to dark if localStorage or matchMedia fails
+          }
+        }
+        document.documentElement.setAttribute('data-theme', getInitialTheme());
+      })();
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-      :root {
-        --background: #0A0A0F;
+      html {
+        scroll-behavior: smooth;
+      }
+      /* Dark Theme (Cyan) */
+      html[data-theme="dark"] {
+        --background: #050509;
         --text-primary: #F0F2F5;
         --text-secondary: #9DA3AE;
-        --accent: #3874E8;
-        --accent-dark: #2A5AB8;
-        --surface: rgba(22, 24, 29, 0.5);
-        --border: rgba(56, 116, 232, 0.1);
-        --glow: rgba(56, 116, 232, 0.15);
+        --accent: #00FFFF;
+        --accent-rgb: 0, 255, 255;
+        --accent-dark: #00D1D1;
+        --surface: rgba(22, 24, 29, 0.6);
+        --surface-inset: #101018;
+        --border: rgba(var(--accent-rgb), 0.15);
+        --glow: rgba(var(--accent-rgb), 0.2);
+        --shadow-color: rgba(var(--accent-rgb), 0.3);
+        --shadow-color-hover: rgba(var(--accent-rgb), 0.4);
+      }
+      /* Light Theme (Cyan) */
+      html[data-theme="light"] {
+        --background: #F8F9FA;
+        --text-primary: #1F2937;
+        --text-secondary: #6B7280;
+        --accent: #0891B2;
+        --accent-rgb: 8, 145, 178;
+        --accent-dark: #06738F;
+        --surface: #FFFFFF;
+        --surface-inset: #F1F5F9;
+        --border: #E5E7EB;
+        --glow: rgba(var(--accent-rgb), 0.25);
+        --shadow-color: rgba(var(--accent-rgb), 0.3);
+        --shadow-color-hover: rgba(var(--accent-rgb), 0.4);
       }
       body {
         font-family: 'Inter', sans-serif;
         background-color: var(--background);
-        background-image: radial-gradient(var(--border) 1px, transparent 1px);
-        background-size: 30px 30px;
         color: var(--text-secondary);
         -webkit-overflow-scrolling: touch;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+      html[data-theme="dark"] body {
+        background-image: radial-gradient(rgba(var(--accent-rgb), 0.07) 1px, transparent 1px);
+        background-size: 35px 35px;
+      }
+      html[data-theme="light"] body {
+        background-image: radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+        background-size: 35px 35px;
       }
       .body-no-scroll {
         overflow: hidden;
@@ -34,41 +79,59 @@
       }
       /* Hide cursor only on devices with a mouse/fine pointer */
       @media (pointer: fine) {
-        body {
-          cursor: none;
+        body, a, button, input, textarea, select, [role="button"] {
+          cursor: none !important;
         }
       }
       h1, h2, h3, h4, h5, h6 {
         font-family: 'Space Grotesk', sans-serif;
         color: var(--text-primary);
+        transition: color 0.3s ease;
       }
-      .aura {
+      h1 {
+        text-shadow: 0 0 25px var(--glow);
+      }
+      .gradient-text {
+        background: linear-gradient(to bottom, var(--text-primary), #d0d4d9);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-fill-color: transparent;
+      }
+      html[data-theme="light"] .gradient-text {
+         background: linear-gradient(to bottom, var(--text-primary), #4B5563);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-fill-color: transparent;
+      }
+      .cyan-arrow-cursor {
         position: fixed;
         top: 0;
         left: 0;
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        background-color: var(--accent);
-        opacity: 0.3;
         pointer-events: none;
-        transform: translate(-50%, -50%);
-        transition: width 0.3s, height 0.3s, opacity 0.3s, background-color 0.3s;
         z-index: 9999;
-        filter: blur(8px);
+        will-change: transform;
+        /* The transform-origin ensures the arrow's tip is the point of interaction */
+        transform-origin: 1px 1px;
+      }
+      .cyan-arrow-cursor svg {
+        width: 28px;
+        height: 28px;
+        filter: drop-shadow(0 0 3px rgba(0, 255, 255, 0.8)) drop-shadow(0 0 6px rgba(0, 255, 255, 0.5));
       }
       @keyframes border-glow {
         0%, 100% {
           border-color: var(--border);
-          box-shadow: 0 0 5px var(--glow), inset 0 0 5px var(--glow);
+          box-shadow: 0 0 8px var(--glow), inset 0 0 8px var(--glow);
         }
         50% {
-          border-color: rgba(56, 116, 232, 0.5);
-          box-shadow: 0 0 15px var(--glow), inset 0 0 15px var(--glow);
+          border-color: rgba(var(--accent-rgb), 0.6);
+          box-shadow: 0 0 20px var(--glow), inset 0 0 15px var(--glow);
         }
       }
       .clickable-card-glow {
-        animation: border-glow 2.5s infinite ease-in-out;
+        animation: border-glow 5s infinite ease-in-out;
       }
       @keyframes fadeIn {
         from { opacity: 0; transform: translateY(10px); }
@@ -88,11 +151,11 @@
       /* --- Icon Animations --- */
       @keyframes icon-pulse-glow {
         0%, 100% {
-          filter: drop-shadow(0 0 1px var(--accent));
+          filter: drop-shadow(0 0 2px var(--accent));
           transform: scale(1);
         }
         50% {
-          filter: drop-shadow(0 0 4px var(--accent));
+          filter: drop-shadow(0 0 6px var(--accent));
           transform: scale(1.1);
         }
       }
@@ -140,7 +203,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        transition: opacity 0.5s ease-out;
+        transition: opacity 0.5s ease-out, background-color 0.3s ease;
         opacity: 1;
       }
       .triangle-loader {
@@ -157,6 +220,7 @@
         stroke-dasharray: 210;
         stroke-dashoffset: 210;
         animation: draw-triangle 2.5s infinite ease-in-out;
+        transition: stroke 0.3s ease;
       }
       @keyframes draw-triangle {
         30%, 70% {
@@ -187,6 +251,142 @@
       #root.loaded {
         opacity: 1;
       }
+      
+      /* --- Logo Styles --- */
+      .logo-container {
+        color: var(--text-primary);
+        transition: color 0.3s ease, transform 0.3s ease, filter 0.3s ease;
+        filter: drop-shadow(0 0 3px rgba(var(--accent-rgb), 0.3));
+      }
+      .logo-container:hover {
+        color: var(--accent);
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 8px var(--glow));
+      }
+
+      /* --- Hero Live Background --- */
+      .hero-live-bg {
+        background: linear-gradient(135deg, #090e2b, var(--background) 50%, #0c202e);
+        overflow: hidden;
+        /* Add mask for smooth transition to body background */
+        -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+        mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+      }
+      html[data-theme="light"] .hero-live-bg {
+        background: linear-gradient(135deg, #EBF5FF 0%, var(--background) 60%);
+      }
+
+
+      /* Layer 1: Floating Shapes */
+      .floating-shapes {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+      }
+
+      .shape {
+        position: absolute;
+        top: 0;
+        border-radius: 50%;
+        background: rgba(var(--accent-rgb), 0.05); /* Accent color with low opacity */
+        box-shadow: 0 0 40px rgba(var(--accent-rgb), 0.05);
+        animation-name: shape-float;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+        transition: background-color 0.3s ease;
+        opacity: 0; /* Animation will handle fade in/out */
+      }
+      html[data-theme="light"] .shape {
+        background: rgba(var(--accent-rgb), 0.08);
+        box-shadow: 0 0 40px rgba(var(--accent-rgb), 0.08);
+      }
+      
+      /* Layer 2: Geometric Lines */
+      .geometric-lines {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+      }
+
+      .line {
+        position: absolute;
+        background: rgba(var(--accent-rgb), 0.1); /* Accent color with low opacity */
+        animation: pulse 10s infinite ease-in-out;
+        box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.05);
+        transition: background-color 0.3s ease;
+      }
+      html[data-theme="light"] .line {
+        background: rgba(var(--accent-rgb), 0.06);
+      }
+
+      .line-1 { width: 1px; height: 100%; left: 20%; animation-delay: 0s; }
+      .line-2 { width: 1px; height: 100%; left: 50%; animation-delay: -3s; }
+      .line-3 { width: 1px; height: 100%; left: 80%; animation-delay: -6s; }
+      .line-4 { width: 100%; height: 1px; top: 30%; animation-delay: -1.5s; }
+      .line-5 { width: 100%; height: 1px; top: 60%; animation-delay: -4.5s; }
+
+      /* Layer 3: Particle System */
+      .particles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 3;
+      }
+
+      .particle {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background: var(--text-primary);
+        border-radius: 50%;
+        animation: particle-float 20s infinite linear;
+        opacity: 0;
+        transition: background-color 0.3s ease;
+      }
+      html[data-theme="dark"] .particle {
+        background: var(--text-primary);
+      }
+      html[data-theme="light"] .particle {
+        background: var(--text-secondary);
+      }
+
+      /* Animations */
+      @keyframes shape-float {
+        0% {
+            transform: translateY(100vh) rotate(0deg);
+            opacity: 0;
+        }
+        10% {
+            opacity: 0.6;
+        }
+        90% {
+            opacity: 0.6;
+        }
+        100% {
+            transform: translateY(-10vh) rotate(360deg);
+            opacity: 0;
+        }
+      }
+
+      @keyframes pulse {
+        0%, 100% { opacity: 0.1; }
+        50% { opacity: 0.4; }
+      }
+
+      @keyframes particle-float {
+        0% { transform: translateY(100vh); opacity: 0; }
+        10% { opacity: 0.7; }
+        90% { opacity: 0.7; }
+        100% { transform: translateY(-10vh); opacity: 0; }
+      }
     </style>
 
 <link rel="stylesheet" href="/index.css">
@@ -196,14 +396,15 @@
     "react": "https://aistudiocdn.com/react@^19.1.1",
     "react/": "https://aistudiocdn.com/react@^19.1.1/",
     "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
-    "vite": "https://aistudiocdn.com/vite@^7.1.6",
-    "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.0.3",
+    "path": "https://aistudiocdn.com/path@^0.12.7",
     "url": "https://aistudiocdn.com/url@^0.11.4",
-    "path": "https://aistudiocdn.com/path@^0.12.7"
+    "vite": "https://aistudiocdn.com/vite@^7.1.7",
+    "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.0.3",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.21.0"
   }
 }
 </script>
-  <script type="module" crossorigin src="/iamyashramteke/assets/index-B3TQGenM.js"></script>
+  <script type="module" crossorigin src="/iamyashramteke/assets/index-CIv1ci2l.js"></script>
 </head>
   <body>
     <div id="preloader">

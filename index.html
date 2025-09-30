@@ -42,6 +42,9 @@
         --glow: rgba(var(--accent-rgb), 0.2);
         --shadow-color: rgba(var(--accent-rgb), 0.3);
         --shadow-color-hover: rgba(var(--accent-rgb), 0.4);
+        --cursor-color: var(--accent);
+        --cursor-shadow-color: rgba(var(--accent-rgb), 0.6);
+        --cursor-dot-color: rgba(var(--accent-rgb), 0.2);
       }
       /* Light Theme (Cyan) */
       html[data-theme="light"] {
@@ -57,6 +60,9 @@
         --glow: rgba(var(--accent-rgb), 0.25);
         --shadow-color: rgba(var(--accent-rgb), 0.3);
         --shadow-color-hover: rgba(var(--accent-rgb), 0.4);
+        --cursor-color: var(--text-primary);
+        --cursor-shadow-color: rgba(var(--accent-rgb), 0.3);
+        --cursor-dot-color: rgba(var(--accent-rgb), 0.2);
       }
       body {
         font-family: 'Inter', sans-serif;
@@ -70,7 +76,7 @@
         background-size: 35px 35px;
       }
       html[data-theme="light"] body {
-        background-image: radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+        background-image: radial-gradient(rgba(var(--accent-rgb), 0.2) 1px, transparent 1px);
         background-size: 35px 35px;
       }
       .body-no-scroll {
@@ -105,21 +111,58 @@
         background-clip: text;
         text-fill-color: transparent;
       }
-      .cyan-arrow-cursor {
+      
+      @keyframes shimmer-text {
+        0% { background-position: 0% 50%, -200% 50%; }
+        100% { background-position: 0% 50%, 200% 50%; }
+      }
+      .hero-heading-effect {
+        background-image:
+          /* A more subtle vertical fade to the secondary color, ensuring readability */
+          linear-gradient(to bottom, var(--text-primary) 40%, var(--text-secondary) 100%),
+          /* A white shimmer for the dark theme */
+          linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, 0.7) 50%, transparent 70%);
+        background-size: 100% 100%, 200% 100%;
+        background-repeat: no-repeat;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-fill-color: transparent;
+        animation: shimmer-text 6s infinite linear;
+        animation-delay: 2s;
+      }
+      html[data-theme="light"] .hero-heading-effect {
+        background-image:
+          /* The same subtle fade for light theme */
+          linear-gradient(to bottom, var(--text-primary) 40%, var(--text-secondary) 100%),
+          /* An accent-colored shimmer for better visibility on a light background */
+          linear-gradient(100deg, transparent 30%, rgba(var(--accent-rgb), 0.4) 50%, transparent 70%);
+      }
+
+      /* --- Custom Cursor --- */
+      .cursor-pointer {
         position: fixed;
         top: 0;
         left: 0;
         pointer-events: none;
         z-index: 9999;
-        will-change: transform;
-        /* The transform-origin ensures the arrow's tip is the point of interaction */
-        transform-origin: 1px 1px;
-      }
-      .cyan-arrow-cursor svg {
+        transform: translate3d(-100px, -100px, 0); /* Initial off-screen position */
+        will-change: transform, opacity;
         width: 28px;
         height: 28px;
-        filter: drop-shadow(0 0 3px rgba(0, 255, 255, 0.8)) drop-shadow(0 0 6px rgba(0, 255, 255, 0.5));
+        opacity: 0; /* Start fully transparent */
+        transition: opacity 0.3s ease; /* Smooth fade for visibility changes */
       }
+
+      .cursor-pointer svg {
+        width: 100%;
+        height: 100%;
+        fill: var(--cursor-color);
+        stroke: var(--cursor-color);
+        filter: drop-shadow(0 0 3px var(--cursor-shadow-color)) drop-shadow(0 0 6px var(--cursor-shadow-color));
+        transition: fill 0.3s ease, stroke 0.3s ease, filter 0.3s ease;
+      }
+
       @keyframes border-glow {
         0%, 100% {
           border-color: var(--border);
@@ -273,7 +316,7 @@
         mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
       }
       html[data-theme="light"] .hero-live-bg {
-        background: linear-gradient(135deg, #EBF5FF 0%, var(--background) 60%);
+        background: linear-gradient(135deg, #E0F7FA 0%, var(--background) 60%);
       }
 
 
@@ -300,8 +343,8 @@
         opacity: 0; /* Animation will handle fade in/out */
       }
       html[data-theme="light"] .shape {
-        background: rgba(var(--accent-rgb), 0.08);
-        box-shadow: 0 0 40px rgba(var(--accent-rgb), 0.08);
+        background: rgba(var(--accent-rgb), 0.15);
+        box-shadow: 0 0 40px rgba(var(--accent-rgb), 0.15);
       }
       
       /* Layer 2: Geometric Lines */
@@ -322,7 +365,7 @@
         transition: background-color 0.3s ease;
       }
       html[data-theme="light"] .line {
-        background: rgba(var(--accent-rgb), 0.06);
+        background: rgba(var(--accent-rgb), 0.12);
       }
 
       .line-1 { width: 1px; height: 100%; left: 20%; animation-delay: 0s; }
@@ -355,7 +398,7 @@
         background: var(--text-primary);
       }
       html[data-theme="light"] .particle {
-        background: var(--text-secondary);
+        background: var(--text-primary);
       }
 
       /* Animations */
@@ -387,6 +430,33 @@
         90% { opacity: 0.7; }
         100% { transform: translateY(-10vh); opacity: 0; }
       }
+
+      /* --- Watermark --- */
+      .error-watermark {
+        position: fixed;
+        bottom: 2rem;
+        left: 2rem;
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        color: var(--text-secondary);
+        opacity: 0.15;
+        pointer-events: none;
+        z-index: 1000;
+        transition: opacity 0.3s ease;
+      }
+      html[data-theme="light"] .error-watermark {
+         opacity: 0.2;
+      }
+      @media (max-width: 768px) {
+        .error-watermark {
+          bottom: 1.5rem;
+          left: 1.5rem;
+          font-size: 0.875rem;
+        }
+      }
+
     </style>
 
 <link rel="stylesheet" href="/index.css">
@@ -399,12 +469,11 @@
     "path": "https://aistudiocdn.com/path@^0.12.7",
     "url": "https://aistudiocdn.com/url@^0.11.4",
     "vite": "https://aistudiocdn.com/vite@^7.1.7",
-    "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.0.3",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.21.0"
+    "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.0.3"
   }
 }
 </script>
-  <script type="module" crossorigin src="/iamyashramteke/assets/index-CIv1ci2l.js"></script>
+  <script type="module" crossorigin src="/iamyashramteke/assets/index-CE5qi1Wn.js"></script>
 </head>
   <body>
     <div id="preloader">

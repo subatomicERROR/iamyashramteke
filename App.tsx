@@ -95,7 +95,7 @@ const App: React.FC = () => {
           <Hero />
           <About />
           <Projects navigate={navigate} />
-          <Explorations />
+          <Explorations navigate={navigate} />
           <Contact />
         </main>
         <Footer />
@@ -114,6 +114,7 @@ const App: React.FC = () => {
     <div className="bg-transparent text-[#A9B3C1] min-h-screen overflow-x-hidden antialiased">
       {!isTouchDevice && <Cursor />}
       {renderContent()}
+      <div className="error-watermark" aria-hidden="true">.ERROR</div>
     </div>
   );
 };

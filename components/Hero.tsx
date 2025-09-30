@@ -34,7 +34,7 @@ const TypingEffect: React.FC<{ titles: string[] }> = ({ titles }) => {
 };
 
 const Hero: React.FC = () => {
-    const titles = ["AI-Developer", "Mind Architect", "Quantum Thinker", "Digital Healer", "Commercial-Artist", "Lucid-Dreamer", "Polymathical Mind"];
+    const titles = ["Founder of .ERROR", "AI Architect", "Software Developer", "Web Developer", "Web Designer", "Machine Learning", "Quantum Thinker", "Lucid Dreamer", "Commercial Artist", "Digital Healer"];
     
     const scrollTo = (e: React.MouseEvent<HTMLAnchorElement>, selector: string) => {
         e.preventDefault();
@@ -48,23 +48,25 @@ const Hero: React.FC = () => {
                 
                 {/* Left Side: Text Content */}
                 <div className="md:max-w-3xl">
-                    <p className="text-sm md:text-base text-[var(--accent)] mb-4 tracking-wider uppercase font-medium animate-fade-in" style={{ animationDelay: '100ms' }}>
-                        YASH R. (subatomicERROR)
-                    </p>
+                    <div className="animate-fade-in mb-4" style={{ animationDelay: '100ms' }}>
+                        <p className="text-sm md:text-base text-[var(--accent)] tracking-wider font-medium">
+                            <span className="uppercase">YASH R .</span> (subatomicERROR)
+                        </p>
+                    </div>
                     <h1 
-                        className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-[var(--text-primary)] mb-6 gradient-text animate-fade-in"
+                        className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-[var(--text-primary)] mb-6 hero-heading-effect animate-fade-in"
                         style={{ animationDelay: '200ms' }}
                     >
                        Transcending Code, Elevating Consciousness.
                     </h1>
                     <h2 
-                        className="text-2xl sm:text-3xl md:text-4xl text-[var(--text-secondary)] font-light h-10 sm:h-12 md:h-14 mb-8 animate-fade-in"
+                        className="text-2xl sm:text-3xl md:text-4xl text-[var(--text-secondary)] font-light h-10 sm:h-12 md:h-14 mb-2 animate-fade-in"
                         style={{ animationDelay: '300ms' }}
                     >
                         <TypingEffect titles={titles} />
                     </h2>
                     <p 
-                        className="mt-4 text-[var(--text-secondary)] text-base sm:text-lg leading-relaxed animate-fade-in"
+                        className="text-[var(--text-secondary)] text-base sm:text-lg leading-relaxed mb-8 animate-fade-in"
                         style={{ animationDelay: '400ms' }}
                     >
                         I craft digital tools for healing and share philosophies to elevate consciousness. Through my personal brand, I also guide men on how to master solitude, build unwavering consistency, and transmute heartbreak into strength.

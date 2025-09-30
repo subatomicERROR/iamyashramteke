@@ -9,7 +9,6 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ activeSection }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [isScrolled, setIsScrolled] = useState(false);
     const [theme, setTheme] = useState<Theme>(() => {
         if (typeof window !== 'undefined') {
             const initialTheme = document.documentElement.getAttribute('data-theme');
@@ -36,14 +35,6 @@ const Header: React.FC<HeaderProps> = ({ activeSection }) => {
             console.error("Failed to set theme in localStorage", e);
         }
     }, [theme]);
-
-    useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 20);
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
 
     useEffect(() => {
         if (isOpen) {
@@ -91,7 +82,7 @@ const Header: React.FC<HeaderProps> = ({ activeSection }) => {
 
     return (
         <>
-            <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out ${isScrolled ? 'bg-[var(--background)]/80 backdrop-blur-lg border-b border-[var(--border)]' : 'bg-transparent border-b border-transparent'}`}>
+            <header className="fixed top-0 left-0 w-full z-50 transition-colors duration-500 ease-in-out bg-[var(--background)]/80 backdrop-blur-lg border-b border-[var(--border)]">
                 <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 flex justify-between items-center h-20">
                     <a href="#home" onClick={(e) => scrollToSection(e, '#home')} className="z-50">
                        <Logo />

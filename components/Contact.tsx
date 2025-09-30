@@ -25,7 +25,7 @@ const Contact: React.FC = () => {
         return 4;
     };
 
-    const instagramLinks = EXPLORATIONS.filter(item => item.url.includes('instagram.com'))
+    const instagramLinks = EXPLORATIONS.filter(item => item.url && item.url.includes('instagram.com'))
         .sort((a, b) => getOrderScore(a.title) - getOrderScore(b.title));
 
     return (

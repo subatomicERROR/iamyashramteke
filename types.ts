@@ -8,3 +8,11 @@ export interface Project {
   repoUrl: string;
   slug?: string;
 }
+
+export interface Exploration {
+  title: string;
+  description: string;
+  url?: string;
+  slug?: string;
+  icon: React.ComponentType<{ className?: string }>;
+}

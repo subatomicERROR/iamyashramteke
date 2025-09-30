@@ -1,8 +1,8 @@
 import React from 'react';
 import { NavigationProps } from '../App';
 
-const CubeGamePage: React.FC<NavigationProps> = () => {
+const HiniChatPage: React.FC<NavigationProps> = () => {
   return null;
 };
 
-export default CubeGamePage;
+export default HiniChatPage;

@@ -12,9 +12,3 @@ A minimalist insight into the digital footprint and ongoing explorations of Yash
 [https://subatomicerror.github.io/iamyashramteke/](https://subatomicerror.github.io/iamyashramteke/)
 
 ---
-
-## Echoes
-- **GitHub:** [@subatomicERROR](https://github.com/subatomicERROR)
-- **Manifest:** [iamyash.io](https://iamyash.io) (Once your custom domain is set up)
-
----

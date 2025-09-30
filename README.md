@@ -1,5 +1,5 @@
 # subatomicERROR // Yash R
-> AI | Consciousness | Quantum
+AI | Consciousness | Quantum
 
 <p align="center">
   <img src="subatomicERROR.png" alt="subatomicERROR Portfolio Screenshot" width="800">

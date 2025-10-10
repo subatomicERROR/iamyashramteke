@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="A digital sanctuary for Yash R (subatomicERROR), a developer focused on self-improvement, healing, and consciousness elevation. This portfolio showcases digital tools and explorations designed to help break the matrix and elevate the mind." />
+    <meta name="description" content="A digital sanctuary for Yash R of opendev-labs, a developer focused on self-improvement, healing, and consciousness elevation. This portfolio showcases digital tools and explorations designed to help break the matrix and elevate the mind." />
     <title>@iamyash.io</title>
     <script>
       (function() {
@@ -28,6 +28,34 @@
       html {
         scroll-behavior: smooth;
       }
+      /* --- Theme Transition --- */
+      /* These variables are set by JS during the theme toggle */
+      :root {
+        --clip-x: 50%;
+        --clip-y: 50%;
+        --clip-radius: 150vw; /* A large fallback radius */
+      }
+      @keyframes reveal-in {
+        from { clip-path: circle(0px at var(--clip-x) var(--clip-y)); }
+        to { clip-path: circle(var(--clip-radius) at var(--clip-x) var(--clip-y)); }
+      }
+      @keyframes reveal-out {
+        from { clip-path: circle(var(--clip-radius) at var(--clip-x) var(--clip-y)); }
+        to { clip-path: circle(0px at var(--clip-x) var(--clip-y)); }
+      }
+      /* The ::view-transition-group(root) is needed to contain the clip-path */
+      ::view-transition-group(root) {
+        animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      ::view-transition-old(root) {
+        animation: 600ms reveal-out both;
+        z-index: 9999;
+      }
+      ::view-transition-new(root) {
+        animation: 600ms reveal-in both;
+        mix-blend-mode: normal;
+      }
+      
       /* Dark Theme (Cyan) */
       html[data-theme="dark"] {
         --background: #050509;
@@ -45,6 +73,8 @@
         --cursor-color: var(--accent);
         --cursor-shadow-color: rgba(var(--accent-rgb), 0.6);
         --cursor-dot-color: rgba(var(--accent-rgb), 0.2);
+        --scanline-color: rgba(var(--accent-rgb), 0.05);
+        --grid-color: rgba(var(--accent-rgb), 0.1);
       }
       /* Light Theme (Cyan) */
       html[data-theme="light"] {
@@ -63,13 +93,15 @@
         --cursor-color: var(--text-primary);
         --cursor-shadow-color: rgba(var(--accent-rgb), 0.3);
         --cursor-dot-color: rgba(var(--accent-rgb), 0.2);
+        --scanline-color: rgba(var(--accent-rgb), 0.08);
+        --grid-color: rgba(var(--accent-rgb), 0.15);
       }
       body {
         font-family: 'Inter', sans-serif;
         background-color: var(--background);
         color: var(--text-secondary);
         -webkit-overflow-scrolling: touch;
-        transition: background-color 0.3s ease, color 0.3s ease;
+        transition: background-color 0.5s ease, color 0.5s ease;
       }
       html[data-theme="dark"] body {
         background-image: radial-gradient(rgba(var(--accent-rgb), 0.07) 1px, transparent 1px);
@@ -92,7 +124,7 @@
       h1, h2, h3, h4, h5, h6 {
         font-family: 'Space Grotesk', sans-serif;
         color: var(--text-primary);
-        transition: color 0.3s ease;
+        transition: color 0.5s ease;
       }
       h1 {
         text-shadow: 0 0 25px var(--glow);
@@ -175,13 +207,6 @@
       }
       .clickable-card-glow {
         animation: border-glow 5s infinite ease-in-out;
-      }
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-      .animate-fade-in {
-        animation: fadeIn 0.5s ease-out forwards;
       }
       .scrollbar-hide::-webkit-scrollbar {
         display: none;
@@ -295,20 +320,40 @@
         opacity: 1;
       }
       
-      /* --- Logo Styles --- */
-      .logo-container {
+      /* --- Logo Styles & Glitch Effect --- */
+      .logo-container-glitch {
+        position: relative;
         color: var(--text-primary);
-        transition: color 0.3s ease, transform 0.3s ease, filter 0.3s ease;
+        transition: color 0.3s ease, transform 0.3s ease;
         filter: drop-shadow(0 0 3px rgba(var(--accent-rgb), 0.3));
       }
-      .logo-container:hover {
-        color: var(--accent);
-        transform: scale(1.1);
+      .logo-container-glitch:hover {
+        transform: scale(1.05);
+        animation: glitch-fast 0.4s infinite;
+      }
+      .logo-container-glitch > svg {
+        transition: filter 0.3s ease;
+      }
+      .logo-container-glitch:hover > svg {
         filter: drop-shadow(0 0 8px var(--glow));
+      }
+      @keyframes glitch-fast {
+        0%, 100% { transform: translate(0, 0); color: var(--accent); }
+        20% { transform: translate(-2px, 1px); color: #ff00ff; }
+        40% { transform: translate(-1px, -1px); color: var(--text-primary); }
+        60% { transform: translate(2px, 1px); color: #00ff00; }
+        80% { transform: translate(1px, -2px); color: var(--accent); }
       }
 
       /* --- Hero Live Background --- */
       .hero-live-bg {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100vw;
+        height: 100%;
+        z-index: 0;
         background: linear-gradient(135deg, #090e2b, var(--background) 50%, #0c202e);
         overflow: hidden;
         /* Add mask for smooth transition to body background */
@@ -319,145 +364,256 @@
         background: linear-gradient(135deg, #E0F7FA 0%, var(--background) 60%);
       }
 
-
-      /* Layer 1: Floating Shapes */
-      .floating-shapes {
+      .floating-shapes, .geometric-lines, .particles {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: 1;
       }
 
       .shape {
         position: absolute;
-        top: 0;
+        top: -150px;
+        background-color: rgba(var(--accent-rgb), 0.05);
+        border: 1px solid rgba(var(--accent-rgb), 0.1);
         border-radius: 50%;
-        background: rgba(var(--accent-rgb), 0.05); /* Accent color with low opacity */
-        box-shadow: 0 0 40px rgba(var(--accent-rgb), 0.05);
         animation-name: shape-float;
-        animation-iteration-count: infinite;
         animation-timing-function: linear;
-        transition: background-color 0.3s ease;
-        opacity: 0; /* Animation will handle fade in/out */
+        animation-iteration-count: infinite;
+        filter: blur(2px);
       }
-      html[data-theme="light"] .shape {
-        background: rgba(var(--accent-rgb), 0.15);
-        box-shadow: 0 0 40px rgba(var(--accent-rgb), 0.15);
-      }
-      
-      /* Layer 2: Geometric Lines */
-      .geometric-lines {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 2;
+
+      @keyframes shape-float {
+        to {
+          transform: translateY(calc(100vh + 150px)) rotate(360deg);
+        }
       }
 
       .line {
         position: absolute;
-        background: rgba(var(--accent-rgb), 0.1); /* Accent color with low opacity */
-        animation: pulse 10s infinite ease-in-out;
-        box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.05);
-        transition: background-color 0.3s ease;
-      }
-      html[data-theme="light"] .line {
-        background: rgba(var(--accent-rgb), 0.12);
-      }
-
-      .line-1 { width: 1px; height: 100%; left: 20%; animation-delay: 0s; }
-      .line-2 { width: 1px; height: 100%; left: 50%; animation-delay: -3s; }
-      .line-3 { width: 1px; height: 100%; left: 80%; animation-delay: -6s; }
-      .line-4 { width: 100%; height: 1px; top: 30%; animation-delay: -1.5s; }
-      .line-5 { width: 100%; height: 1px; top: 60%; animation-delay: -4.5s; }
-
-      /* Layer 3: Particle System */
-      .particles {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
+        background: linear-gradient(to bottom, transparent, rgba(var(--accent-rgb), 0.4), transparent);
+        width: 1px;
         height: 100%;
-        z-index: 3;
+        animation: pulse 4s ease-in-out infinite alternate;
+      }
+      .line-1 { left: 10%; animation-delay: -1s; }
+      .line-2 { left: 30%; animation-delay: -3s; }
+      .line-3 { left: 50%; animation-delay: -5s; }
+      .line-4 { left: 70%; animation-delay: -2s; }
+      .line-5 { left: 90%; animation-delay: -4s; }
+
+      @keyframes pulse {
+        from { opacity: 0; }
+        to { opacity: 1; }
       }
 
       .particle {
         position: absolute;
+        bottom: 0;
         width: 2px;
         height: 2px;
-        background: var(--text-primary);
+        background-color: rgba(var(--accent-rgb), 0.6);
         border-radius: 50%;
-        animation: particle-float 20s infinite linear;
-        opacity: 0;
-        transition: background-color 0.3s ease;
-      }
-      html[data-theme="dark"] .particle {
-        background: var(--text-primary);
-      }
-      html[data-theme="light"] .particle {
-        background: var(--text-primary);
-      }
-
-      /* Animations */
-      @keyframes shape-float {
-        0% {
-            transform: translateY(100vh) rotate(0deg);
-            opacity: 0;
-        }
-        10% {
-            opacity: 0.6;
-        }
-        90% {
-            opacity: 0.6;
-        }
-        100% {
-            transform: translateY(-10vh) rotate(360deg);
-            opacity: 0;
-        }
-      }
-
-      @keyframes pulse {
-        0%, 100% { opacity: 0.1; }
-        50% { opacity: 0.4; }
+        animation-name: particle-float;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+        box-shadow: 0 0 5px rgba(var(--accent-rgb), 0.8);
       }
 
       @keyframes particle-float {
-        0% { transform: translateY(100vh); opacity: 0; }
-        10% { opacity: 0.7; }
-        90% { opacity: 0.7; }
-        100% { transform: translateY(-10vh); opacity: 0; }
-      }
-
-      /* --- Watermark --- */
-      .error-watermark {
-        position: fixed;
-        bottom: 2rem;
-        left: 2rem;
-        font-family: 'Space Grotesk', sans-serif;
-        font-size: 1rem;
-        font-weight: 600;
-        letter-spacing: 0.1em;
-        color: var(--text-secondary);
-        opacity: 0.15;
-        pointer-events: none;
-        z-index: 1000;
-        transition: opacity 0.3s ease;
-      }
-      html[data-theme="light"] .error-watermark {
-         opacity: 0.2;
-      }
-      @media (max-width: 768px) {
-        .error-watermark {
-          bottom: 1.5rem;
-          left: 1.5rem;
-          font-size: 0.875rem;
+        to {
+          transform: translateY(-100vh);
+          opacity: 0;
         }
       }
 
+      @keyframes bounce-down {
+        0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+        40% { transform: translateY(8px); }
+        60% { transform: translateY(4px); }
+      }
+      .animate-bounce-down { animation: bounce-down 2s infinite; }
+      
+      /* --- QUANTUM CORE (Logo Overlay) STYLES --- */
+      @keyframes quantum-foam {
+        0% { background-position: 0% 0%; }
+        100% { background-position: 100% 100%; }
+      }
+      @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+      @keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
+
+      .logo-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 10000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        pointer-events: none;
+        isolation: isolate;
+      }
+      .logo-overlay.visible {
+        opacity: 1;
+        pointer-events: auto;
+        animation: fade-in 400ms ease-out forwards;
+      }
+      .logo-overlay.closing {
+        animation: fade-out 400ms ease-in forwards;
+      }
+      .logo-overlay::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-color: rgba(5, 5, 9, 0.85);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        background-image:
+            radial-gradient(circle at 25% 25%, rgba(var(--accent-rgb), 0.1) 0%, transparent 20%),
+            radial-gradient(circle at 75% 75%, rgba(var(--accent-rgb), 0.08) 0%, transparent 20%);
+        background-size: 200% 200%;
+        animation: quantum-foam 20s linear infinite alternate;
+        z-index: -1;
+      }
+      html[data-theme="light"] .logo-overlay::before {
+        background-color: rgba(248, 249, 250, 0.7);
+      }
+      
+      .logo-overlay-content {
+        position: relative;
+        transform: scale(0.95);
+      }
+      .logo-overlay.visible .logo-overlay-content {
+        transform: scale(1);
+        transition: transform 400ms cubic-bezier(0.25, 1, 0.5, 1) 100ms;
+      }
+      
+      .logo-interactive-glow {
+        position: absolute;
+        inset: -150%;
+        z-index: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease-out;
+      }
+      
+      .logo-overlay-close-btn {
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        width: 2.5rem;
+        height: 2.5rem;
+        color: var(--text-secondary);
+        transition: color 0.3s, transform 0.3s;
+        z-index: 10;
+      }
+      .logo-overlay-close-btn:hover {
+        color: var(--text-primary);
+        transform: rotate(90deg) scale(1.1);
+      }
+
+      .hud-corner {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        border-style: solid;
+        border-color: var(--accent);
+        opacity: 0;
+      }
+      .logo-overlay.visible .hud-corner {
+        opacity: 0.5;
+        transition: opacity 0.5s ease-out 500ms;
+      }
+      .hud-corner.top-left { top: 2rem; left: 2rem; border-width: 2px 0 0 2px; }
+      .hud-corner.top-right { top: 2rem; right: 2rem; border-width: 2px 2px 0 0; }
+      .hud-corner.bottom-left { bottom: 2rem; left: 2rem; border-width: 0 0 2px 2px; }
+      .hud-corner.bottom-right { bottom: 2rem; right: 2rem; border-width: 0 2px 2px 0; }
+      
+      .sol-overlay-svg {
+        width: clamp(250px, 80vw, 400px);
+        height: auto;
+        overflow: visible;
+        position: relative;
+        z-index: 1;
+      }
+      .sol-overlay-svg .sol-circle {
+        stroke: var(--accent);
+        stroke-width: 1;
+        fill: none;
+        stroke-dasharray: 151;
+        stroke-dashoffset: 151;
+        transform-origin: 50% 50%;
+      }
+      .sol-overlay-svg .sol-interference-pattern {
+        stroke: var(--accent);
+        stroke-width: 0.5;
+        fill: none;
+        stroke-dasharray: 2 8;
+        stroke-dashoffset: 100;
+        opacity: 0;
+      }
+      
+      /* --- Quantum Core Animation Sequence --- */
+      @keyframes quantum-shimmer {
+        0%, 100% { opacity: 0.3; transform: scale(1.1); filter: blur(8px) contrast(1.5); }
+        50% { opacity: 0.7; transform: scale(1.15); filter: blur(5px) contrast(2); }
+      }
+      @keyframes wavefunction-collapse {
+        0% {
+          opacity: 0.7; transform: scale(1.15);
+          filter: blur(5px) contrast(2);
+          stroke-dashoffset: 151;
+          stroke-width: 3;
+        }
+        70% {
+          opacity: 1; transform: scale(1.02);
+          filter: blur(1px) contrast(1);
+          stroke-width: 1;
+        }
+        100% {
+          opacity: 1; transform: scale(1);
+          filter: blur(0) contrast(1);
+          stroke-dashoffset: 0;
+          stroke-width: 1.5;
+        }
+      }
+      @keyframes interference-ripple {
+        0% { opacity: 0; stroke-dashoffset: 50; }
+        30% { opacity: 0.5; }
+        100% { opacity: 0; stroke-dashoffset: -50; }
+      }
+      @keyframes quantum-resonance {
+        0%, 100% {
+          transform: scale(1);
+          filter: drop-shadow(0 0 10px var(--glow)) drop-shadow(0 0 22px var(--glow));
+          stroke-width: 1.5;
+        }
+        50% {
+          transform: scale(1.02);
+          filter: drop-shadow(0 0 18px var(--glow)) drop-shadow(0 0 35px var(--glow));
+          stroke-width: 1.2;
+        }
+      }
+
+      .logo-overlay.opening .sol-circle,
+      .logo-overlay.opening .sol-interference-pattern {
+        animation: quantum-shimmer 2s ease-in-out infinite;
+        animation-delay: calc(var(--i) * 50ms);
+      }
+      .logo-overlay.visible .sol-overlay-svg {
+        animation: quantum-resonance 5s ease-in-out infinite 2s;
+      }
+      .logo-overlay.visible .sol-circle {
+        animation: wavefunction-collapse 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        animation-delay: calc(var(--i) * 100ms + 200ms);
+      }
+      .logo-overlay.visible .sol-interference-pattern {
+        animation: interference-ripple 2s ease-out forwards;
+        animation-delay: calc(var(--i) * 100ms + 1200ms);
+      }
     </style>
+
+<link rel="stylesheet" href="/index.css">
   <script type="importmap">
 {
   "imports": {
@@ -471,7 +627,7 @@
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
+  <script type="module" crossorigin src="/iamyashramteke/assets/index-EEzoLnIw.js"></script>
 </head>
   <body>
     <div id="preloader">
@@ -482,6 +638,5 @@
       </div>
     </div>
     <div id="root"></div>
-  <script type="module" src="/index.tsx"></script>
 </body>
 </html>
